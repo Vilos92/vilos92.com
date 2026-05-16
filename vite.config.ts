@@ -15,17 +15,7 @@ const REPO_TS_FMT_OPTIONS = {
 };
 
 export default defineConfig({
-  plugins: isVitest
-    ? []
-    : [
-        cloudflare({
-          config: () => ({
-            assets: {
-              run_worker_first: true
-            }
-          })
-        })
-      ],
+  plugins: isVitest ? [] : [cloudflare()],
   staged: {
     '*': 'vp check --fix'
   },

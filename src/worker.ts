@@ -1,11 +1,8 @@
 import {Hono} from 'hono';
 
-import {HUB_HTML} from './hub.ts';
 import {resolveSlugPath} from './routing.ts';
 
 const app = new Hono();
-
-app.get('/', c => c.html(HUB_HTML));
 
 app.all('*', c => {
   const pathname = new URL(c.req.url).pathname;
