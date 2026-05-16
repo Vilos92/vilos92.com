@@ -1,4 +1,7 @@
+import {cloudflare} from '@cloudflare/vite-plugin';
 import {defineConfig} from 'vite-plus';
+
+const isVitest = process.env.VITEST === 'true';
 
 const REPO_TS_FMT_OPTIONS = {
   arrowParens: 'avoid' as const,
@@ -12,6 +15,7 @@ const REPO_TS_FMT_OPTIONS = {
 };
 
 export default defineConfig({
+  plugins: isVitest ? [] : [cloudflare()],
   staged: {
     '*': 'vp check --fix'
   },

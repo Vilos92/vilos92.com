@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "tsc && vp build",
+    "build": "vp build",
+    "deploy": "wrangler deploy",
     "preview": "vp preview",
     "prepare": "vp config",
     "fmt:check": "vp fmt --check",
@@ -16,11 +17,18 @@
     "fallow": "fallow --summary",
     "fallow:audit": "fallow audit"
   },
+  "dependencies": {
+    "fuzzysort": "^3.1.0",
+    "hono": "^4.11.4"
+  },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.35.0",
+    "@cloudflare/workers-types": "^4.20250525.0",
     "fallow": "^2.66.1",
     "typescript": "~6.0.2",
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
-    "vite-plus": "latest"
+    "vite-plus": "latest",
+    "wrangler": "^4.87.0"
   },
   "overrides": {
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
