@@ -1,7 +1,7 @@
 import {describe, expect, test} from 'vite-plus/test';
 
 import {projects} from './projects.ts';
-import {resolvePath} from './routing.ts';
+import {resolveSlugPath} from './routing.ts';
 import {findFuzzyPublicProject} from './slug-fuzzy.ts';
 
 describe('findFuzzyPublicProject', () => {
@@ -16,35 +16,27 @@ describe('findFuzzyPublicProject', () => {
   });
 });
 
-describe('resolvePath', () => {
-  test('redirects / to GitHub profile', () => {
-    expect(resolvePath('/')).toEqual({
-      kind: 'redirect',
-      location: 'https://github.com/Vilos92'
-    });
-  });
-
+describe('resolveSlugPath', () => {
   test('redirects exact slug to repo', () => {
-    expect(resolvePath('/vilos92.com')).toEqual({
+    expect(resolveSlugPath('/vilos92.com')).toEqual({
       kind: 'redirect',
       location: 'https://github.com/Vilos92/vilos92.com'
     });
   });
 
   test('redirects fuzzy typo for public repo', () => {
-    expect(resolvePath('/dotfile').kind).toBe('redirect');
-    expect(resolvePath('/dotfile')).toMatchObject({
+    expect(resolveSlugPath('/dotfile')).toMatchObject({
       kind: 'redirect',
       location: 'https://github.com/Vilos92/dotfiles'
     });
   });
 
   test('returns not_found for unknown slug', () => {
-    expect(resolvePath('/zzzznotarepo')).toEqual({kind: 'not_found', slug: 'zzzznotarepo'});
+    expect(resolveSlugPath('/zzzznotarepo')).toEqual({kind: 'not_found', slug: 'zzzznotarepo'});
   });
 
   test('trailing slash on slug still resolves', () => {
-    expect(resolvePath('/dotfiles/')).toEqual({
+    expect(resolveSlugPath('/dotfiles/')).toEqual({
       kind: 'redirect',
       location: 'https://github.com/Vilos92/dotfiles'
     });

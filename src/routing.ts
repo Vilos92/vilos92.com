@@ -1,15 +1,18 @@
-import {GITHUB_PROFILE_URL, projects} from './projects.ts';
+import {projects} from './projects.ts';
 import type {Project} from './projects.ts';
 import {findFuzzyPublicProject} from './slug-fuzzy.ts';
 
 export type RedirectResult = {kind: 'redirect'; location: string} | {kind: 'not_found'; slug: string};
 
-/** Resolve a pathname using the given project list (for tests and production). */
-export function resolvePathWithProjects(pathname: string, projectList: readonly Project[]): RedirectResult {
+/** Resolve /:slug (not /) to a redirect target or 404. */
+export function resolveSlugPathWithProjects(
+  pathname: string,
+  projectList: readonly Project[]
+): RedirectResult {
   const path = pathname.replace(/\/+$/, '') || '/';
 
   if (path === '/') {
-    return {kind: 'redirect', location: GITHUB_PROFILE_URL};
+    return {kind: 'not_found', slug: '(root)'};
   }
 
   const slug = path.slice(1);
@@ -32,7 +35,13 @@ export function resolvePathWithProjects(pathname: string, projectList: readonly 
   return {kind: 'not_found', slug};
 }
 
-/** Resolve a pathname to a redirect target or 404. */
-export function resolvePath(pathname: string): RedirectResult {
-  return resolvePathWithProjects(pathname, projects);
+/** @deprecated Use resolveSlugPathWithProjects; kept as alias for tests. */
+export const resolvePathWithProjects = resolveSlugPathWithProjects;
+
+/** Resolve a slug path to a redirect target or 404. */
+export function resolveSlugPath(pathname: string): RedirectResult {
+  return resolveSlugPathWithProjects(pathname, projects);
 }
+
+/** @deprecated Use resolveSlugPath. */
+export const resolvePath = resolveSlugPath;

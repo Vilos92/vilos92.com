@@ -1,11 +1,15 @@
 import {Hono} from 'hono';
 
-import {resolvePath} from './routing.ts';
+import {HUB_HTML} from './hub.ts';
+import {resolveSlugPath} from './routing.ts';
 
 const app = new Hono();
 
+app.get('/', c => c.html(HUB_HTML));
+
 app.all('*', c => {
-  const result = resolvePath(new URL(c.req.url).pathname);
+  const pathname = new URL(c.req.url).pathname;
+  const result = resolveSlugPath(pathname);
 
   if (result.kind === 'redirect') {
     return c.redirect(result.location, 302);
