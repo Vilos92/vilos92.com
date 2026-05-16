@@ -11,7 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
-.fallow/
+.fallow/*
+!.fallow/health-baseline.json
+!.fallow/dupes-baseline.json
 
 # Editor directories and files
 .vscode/*
