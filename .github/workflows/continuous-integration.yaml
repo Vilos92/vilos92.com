@@ -48,6 +48,7 @@ jobs:
       security-events: write
 
     steps:
+      # Full history so fallow audit can diff against the PR base (auto-changed-since / new-only gate).
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
