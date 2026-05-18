@@ -25,36 +25,36 @@ const FIXTURE_PROJECTS: Project[] = [
 
 describe('public vs private slug routing (fixture)', () => {
   test('exact public slug redirects', () => {
-    expect(resolveSlugPathWithProjects('/dotfiles', FIXTURE_PROJECTS)).toEqual({
+    expect(resolveSlugPathWithProjects(FIXTURE_PROJECTS, '/dotfiles')).toEqual({
       kind: 'redirect',
       location: 'https://github.com/Vilos92/dotfiles'
     });
   });
 
   test('fuzzy typo resolves for public slug', () => {
-    expect(resolveSlugPathWithProjects('/dotfile', FIXTURE_PROJECTS)).toEqual({
+    expect(resolveSlugPathWithProjects(FIXTURE_PROJECTS, '/dotfile')).toEqual({
       kind: 'redirect',
       location: 'https://github.com/Vilos92/dotfiles'
     });
   });
 
   test('exact private slug redirects', () => {
-    expect(resolveSlugPathWithProjects('/cynth', FIXTURE_PROJECTS)).toEqual({
+    expect(resolveSlugPathWithProjects(FIXTURE_PROJECTS, '/cynth')).toEqual({
       kind: 'redirect',
       location: 'https://github.com/Vilos92/cynth'
     });
   });
 
   test('typo near private slug does not redirect', () => {
-    expect(resolveSlugPathWithProjects('/cynht', FIXTURE_PROJECTS)).toEqual({
+    expect(resolveSlugPathWithProjects(FIXTURE_PROJECTS, '/cynht')).toEqual({
       kind: 'not_found',
       slug: 'cynht'
     });
   });
 
   test('findFuzzyPublicProject never returns private repos', () => {
-    expect(fuzzyFindPublicProject('cynht', FIXTURE_PROJECTS)).toBeUndefined();
-    expect(fuzzyFindPublicProject('cynth', FIXTURE_PROJECTS)).toBeUndefined();
-    expect(fuzzyFindPublicProject('dotfile', FIXTURE_PROJECTS)?.private).toBe(false);
+    expect(fuzzyFindPublicProject(FIXTURE_PROJECTS, 'cynht')).toBeUndefined();
+    expect(fuzzyFindPublicProject(FIXTURE_PROJECTS, 'cynth')).toBeUndefined();
+    expect(fuzzyFindPublicProject(FIXTURE_PROJECTS, 'dotfile')?.private).toBe(false);
   });
 });

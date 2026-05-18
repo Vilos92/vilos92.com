@@ -20,8 +20,8 @@ const HUB_PREVIEW_LIMIT = 8;
 
 /** `fuzzysort` public projects with scores; empty `query` returns `[]`. */
 export function searchPublicProjectsScored(
-  query: string,
   projects: readonly Project[],
+  query: string,
   limit = HUB_PREVIEW_LIMIT
 ) {
   const trimmed = query.trim();
@@ -40,9 +40,9 @@ export function searchPublicProjectsScored(
 
 /** `fuzzysort` public `Project`s for hub preview. */
 export function searchPublicProjects(
-  query: string,
   projects: readonly Project[],
+  query: string,
   limit = HUB_PREVIEW_LIMIT
 ): Project[] {
-  return searchPublicProjectsScored(query, projects, limit).map(result => result.obj);
+  return searchPublicProjectsScored(projects, query, limit).map(result => result.obj);
 }

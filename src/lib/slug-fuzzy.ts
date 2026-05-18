@@ -5,8 +5,9 @@ import type {Project} from '@/lib/projects';
  * Helpers.
  */
 
-export function fuzzyFindPublicProject(input: string, projects: readonly Project[]): Project | undefined {
-  const results = searchPublicProjectsScored(input, projects, 2);
+/** Fuzzy-match a public `Project` by slug; returns `undefined` when no match or top two are too close. */
+export function fuzzyFindPublicProject(projects: readonly Project[], slug: string): Project | undefined {
+  const results = searchPublicProjectsScored(projects, slug, 2);
   const best = results[0];
   if (!best) {
     return undefined;

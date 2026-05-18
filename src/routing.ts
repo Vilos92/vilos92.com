@@ -14,8 +14,8 @@ type RedirectResult = {kind: 'redirect'; location: string} | {kind: 'not_found';
 
 /** Resolve `/:slug` (not `/`) to a redirect target or `404`. */
 export function resolveSlugPathWithProjects(
-  pathname: string,
-  projectList: readonly Project[]
+  projectList: readonly Project[],
+  pathname: string
 ): RedirectResult {
   const path = pathname.replace(/\/+$/, '') || '/';
 
@@ -35,7 +35,7 @@ export function resolveSlugPathWithProjects(
     return {kind: 'redirect', location: exact.githubUrl};
   }
 
-  const fuzzy = fuzzyFindPublicProject(normalized, projectList);
+  const fuzzy = fuzzyFindPublicProject(projectList, normalized);
   if (fuzzy) {
     return {kind: 'redirect', location: fuzzy.githubUrl};
   }
@@ -45,5 +45,5 @@ export function resolveSlugPathWithProjects(
 
 /** Resolve a slug path to a redirect target or `404`. */
 export function resolveSlugPath(pathname: string): RedirectResult {
-  return resolveSlugPathWithProjects(pathname, projects);
+  return resolveSlugPathWithProjects(projects, pathname);
 }

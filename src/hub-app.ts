@@ -18,8 +18,8 @@ input.addEventListener('input', () => {
   renderResults(input.value);
 });
 
-form.addEventListener('submit', event => {
-  event.preventDefault();
+form.addEventListener('submit', submitEvent => {
+  submitEvent.preventDefault();
   goToSlug(input.value);
 });
 
@@ -63,7 +63,7 @@ function newTabHint(): HTMLSpanElement {
 }
 
 function renderResults(query: string) {
-  const matches = searchPublicProjects(query, publicProjects);
+  const matches = searchPublicProjects(publicProjects, query);
   resultsEl.replaceChildren(
     ...matches.map(project => {
       const item = document.createElement('li');

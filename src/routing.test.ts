@@ -6,13 +6,13 @@ import {resolveSlugPath} from '@/routing';
 
 describe('findFuzzyPublicProject', () => {
   test('matches close public slug', () => {
-    const match = fuzzyFindPublicProject('dotfile', projects);
+    const match = fuzzyFindPublicProject(projects, 'dotfile');
     expect(match?.slug).toBe('dotfiles');
     expect(match?.private).toBe(false);
   });
 
   test('rejects ambiguous fuzzy matches', () => {
-    expect(fuzzyFindPublicProject('ck', projects)).toBeUndefined();
+    expect(fuzzyFindPublicProject(projects, 'ck')).toBeUndefined();
   });
 });
 
