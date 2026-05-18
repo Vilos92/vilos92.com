@@ -1,8 +1,8 @@
 import {describe, expect, test} from 'vite-plus/test';
 
-import type {Project} from './lib/projects.ts';
-import {findFuzzyPublicProject} from './lib/slug-fuzzy.ts';
-import {resolveSlugPathWithProjects} from './routing.ts';
+import type {Project} from './lib/projects';
+import {fuzzyFindPublicProject} from './lib/slug-fuzzy';
+import {resolveSlugPathWithProjects} from './routing';
 
 /*
  * Constants.
@@ -53,8 +53,8 @@ describe('public vs private slug routing (fixture)', () => {
   });
 
   test('findFuzzyPublicProject never returns private repos', () => {
-    expect(findFuzzyPublicProject('cynht', FIXTURE_PROJECTS)).toBeUndefined();
-    expect(findFuzzyPublicProject('cynth', FIXTURE_PROJECTS)).toBeUndefined();
-    expect(findFuzzyPublicProject('dotfile', FIXTURE_PROJECTS)?.private).toBe(false);
+    expect(fuzzyFindPublicProject('cynht', FIXTURE_PROJECTS)).toBeUndefined();
+    expect(fuzzyFindPublicProject('cynth', FIXTURE_PROJECTS)).toBeUndefined();
+    expect(fuzzyFindPublicProject('dotfile', FIXTURE_PROJECTS)?.private).toBe(false);
   });
 });

@@ -1,12 +1,11 @@
-import {FUZZY_MIN_SCORE, FUZZY_SCORE_GAP, searchPublicProjectsScored} from '../search-public.ts';
-import type {Project} from './projects.ts';
+import {FUZZY_MIN_SCORE, FUZZY_SCORE_GAP, searchPublicProjectsScored} from './project-search';
+import type {Project} from './projects';
 
 /*
- * API.
+ * Helpers.
  */
 
-/** Fuzzy-match a slug against public `Project`s only; requires a clear best `fuzzysort` result. */
-export function findFuzzyPublicProject(input: string, projects: readonly Project[]): Project | undefined {
+export function fuzzyFindPublicProject(input: string, projects: readonly Project[]): Project | undefined {
   const results = searchPublicProjectsScored(input, projects, 2);
   const best = results[0];
   if (!best) {
@@ -14,7 +13,7 @@ export function findFuzzyPublicProject(input: string, projects: readonly Project
   }
 
   const runnerUp = results[1];
-  // Ambiguous: runner-up also clears `FUZZY_MIN_SCORE` and is within `FUZZY_SCORE_GAP` of the winner — skip auto-redirect.
+  // A close second plausible match (e.g. `ck` → `ck22` vs another repo) — return `undefined` so routing 404s instead of a wrong 302.
   if (runnerUp && runnerUp.score >= FUZZY_MIN_SCORE && best.score - runnerUp.score < FUZZY_SCORE_GAP) {
     return undefined;
   }

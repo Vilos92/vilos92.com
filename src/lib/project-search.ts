@@ -1,6 +1,6 @@
 import fuzzysort from 'fuzzysort';
 
-import type {Project} from './lib/projects.ts';
+import type {Project} from './projects';
 
 /*
  * Constants.
@@ -15,7 +15,7 @@ export const FUZZY_SCORE_GAP = 0.15;
 const HUB_PREVIEW_LIMIT = 8;
 
 /*
- * API.
+ * Helpers.
  */
 
 /** `fuzzysort` public projects with scores; empty `query` returns `[]`. */

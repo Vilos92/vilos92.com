@@ -1,6 +1,6 @@
 import './hub.css';
-import {publicProjects} from './lib/projects.ts';
-import {searchPublicProjects} from './search-public.ts';
+import {searchPublicProjects} from './lib/project-search';
+import {publicProjects} from './lib/projects';
 
 /*
  * Constants.

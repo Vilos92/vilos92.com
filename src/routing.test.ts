@@ -1,18 +1,18 @@
 import {describe, expect, test} from 'vite-plus/test';
 
-import {projects} from './lib/projects.ts';
-import {findFuzzyPublicProject} from './lib/slug-fuzzy.ts';
-import {resolveSlugPath} from './routing.ts';
+import {projects} from './lib/projects';
+import {fuzzyFindPublicProject} from './lib/slug-fuzzy';
+import {resolveSlugPath} from './routing';
 
 describe('findFuzzyPublicProject', () => {
   test('matches close public slug', () => {
-    const match = findFuzzyPublicProject('dotfile', projects);
+    const match = fuzzyFindPublicProject('dotfile', projects);
     expect(match?.slug).toBe('dotfiles');
     expect(match?.private).toBe(false);
   });
 
   test('rejects ambiguous fuzzy matches', () => {
-    expect(findFuzzyPublicProject('ck', projects)).toBeUndefined();
+    expect(fuzzyFindPublicProject('ck', projects)).toBeUndefined();
   });
 });
 

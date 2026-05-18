@@ -18,13 +18,15 @@ Use `/* Section name. */` blocks. Read top-down: main entry first, **Helpers.** 
 
 **Order** (omit unused sections): **Constants.** · **Types.** · **Route.** / **API.** / **Script.** · **Helpers.**
 
-**Constants.** — module-level `const` and `export const` (config, parsed JSON, derived lists). **API.** — exported **functions** and file entry points (`src/worker.ts` → **API.**; `src/hub-app.ts` → **Script.**). Do not label `export const` blocks **API.**
+**Constants.** — module-level `const` / `export const`. **API.** / **Script.** — file entry only (`worker.ts` → **API.**; `hub-app.ts` → **Script.**; `routing.ts` → **API.**). **Helpers.** — functions other modules import (`lib/project-search.ts`, `lib/slug-fuzzy.ts`) and private helpers (last). Do not label `export const` **API.** or helper modules **API.**
 
 **Zod:** **Schemas.** → **Runtime types.** → **Constants.** (`parse` / `safeParse` results and other `export const`). Schemas stay module-private unless another file imports them.
 
 Blank line before and after each section block, and between the comment and the code below it.
 
 **Comments:** in `//` / `/** */` prose, backtick code identifiers (functions, variables, constants, types, routes, paths, status codes) — e.g. `` `404` ``, `` `FUZZY_SCORE_GAP` ``; not section headers (`/* API. */`).
+
+**Imports:** no `.ts` / `.tsx` in import paths (`./lib/projects`, not `./lib/projects.ts`); `tsconfig` sets `allowImportingTsExtensions: false`.
 
 ## Project hub (`src/projects.json`)
 

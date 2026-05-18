@@ -1,6 +1,6 @@
-import {projects} from './lib/projects.ts';
-import type {Project} from './lib/projects.ts';
-import {findFuzzyPublicProject} from './lib/slug-fuzzy.ts';
+import {projects} from './lib/projects';
+import type {Project} from './lib/projects';
+import {fuzzyFindPublicProject} from './lib/slug-fuzzy';
 
 /*
  * Types.
@@ -35,7 +35,7 @@ export function resolveSlugPathWithProjects(
     return {kind: 'redirect', location: exact.githubUrl};
   }
 
-  const fuzzy = findFuzzyPublicProject(normalized, projectList);
+  const fuzzy = fuzzyFindPublicProject(normalized, projectList);
   if (fuzzy) {
     return {kind: 'redirect', location: fuzzy.githubUrl};
   }
