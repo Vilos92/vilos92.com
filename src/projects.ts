@@ -1,5 +1,9 @@
 import projectsJson from './projects.json';
 
+/*
+ * Types.
+ */
+
 export type Project = {
   slug: string;
   name: string;
@@ -7,7 +11,15 @@ export type Project = {
   private: boolean;
 };
 
+/*
+ * Constants.
+ */
+
 export const GITHUB_PROFILE_URL = 'https://github.com/Vilos92';
+
+/*
+ * API.
+ */
 
 export const projects = projectsJson as Project[];
 

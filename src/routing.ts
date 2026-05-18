@@ -2,7 +2,15 @@ import {projects} from './projects.ts';
 import type {Project} from './projects.ts';
 import {findFuzzyPublicProject} from './slug-fuzzy.ts';
 
+/*
+ * Types.
+ */
+
 export type RedirectResult = {kind: 'redirect'; location: string} | {kind: 'not_found'; slug: string};
+
+/*
+ * API.
+ */
 
 /** Resolve /:slug (not /) to a redirect target or 404. */
 export function resolveSlugPathWithProjects(

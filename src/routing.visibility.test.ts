@@ -4,6 +4,10 @@ import type {Project} from './projects.ts';
 import {resolveSlugPathWithProjects} from './routing.ts';
 import {findFuzzyPublicProject} from './slug-fuzzy.ts';
 
+/*
+ * Constants.
+ */
+
 const FIXTURE_PROJECTS: Project[] = [
   {
     slug: 'dotfiles',

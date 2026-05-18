@@ -1,6 +1,10 @@
 import {cloudflare} from '@cloudflare/vite-plugin';
 import {defineConfig} from 'vite-plus';
 
+/*
+ * Constants.
+ */
+
 const isVitest = process.env.VITEST === 'true';
 
 const REPO_TS_FMT_OPTIONS = {
@@ -13,6 +17,10 @@ const REPO_TS_FMT_OPTIONS = {
   singleQuote: true,
   sortImports: true
 };
+
+/*
+ * API.
+ */
 
 export default defineConfig({
   plugins: isVitest ? [] : [cloudflare()],

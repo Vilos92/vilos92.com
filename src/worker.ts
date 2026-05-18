@@ -2,6 +2,10 @@ import {Hono} from 'hono';
 
 import {resolveSlugPath} from './routing.ts';
 
+/*
+ * API.
+ */
+
 const app = new Hono();
 
 app.all('*', c => {

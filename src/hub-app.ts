@@ -2,6 +2,31 @@ import './hub.css';
 import {publicProjects} from './projects.ts';
 import {searchPublicProjects} from './search-public.ts';
 
+/*
+ * Constants.
+ */
+
+const form = requireElement<HTMLFormElement>('#go');
+const input = requireElement<HTMLInputElement>('#slug');
+const resultsEl = requireElement<HTMLUListElement>('#results');
+
+/*
+ * Script.
+ */
+
+input.addEventListener('input', () => {
+  renderResults(input.value);
+});
+
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  goToSlug(input.value);
+});
+
+/*
+ * Helpers.
+ */
+
 function requireElement<T extends Element>(selector: string): T {
   const element = document.querySelector<T>(selector);
   if (!element) {
@@ -9,10 +34,6 @@ function requireElement<T extends Element>(selector: string): T {
   }
   return element;
 }
-
-const form = requireElement<HTMLFormElement>('#go');
-const input = requireElement<HTMLInputElement>('#slug');
-const resultsEl = requireElement<HTMLUListElement>('#results');
 
 function openInNewTab(url: string) {
   globalThis.open(url, '_blank', 'noopener,noreferrer');
@@ -59,12 +80,3 @@ function renderResults(query: string) {
     })
   );
 }
-
-input.addEventListener('input', () => {
-  renderResults(input.value);
-});
-
-form.addEventListener('submit', event => {
-  event.preventDefault();
-  goToSlug(input.value);
-});

@@ -2,6 +2,10 @@ import fuzzysort from 'fuzzysort';
 
 import type {Project} from './projects.ts';
 
+/*
+ * Constants.
+ */
+
 /** Minimum fuzzysort score (0–1) for a match. */
 export const FUZZY_MIN_SCORE = 0.5;
 
@@ -9,6 +13,10 @@ export const FUZZY_MIN_SCORE = 0.5;
 export const FUZZY_SCORE_GAP = 0.15;
 
 export const HUB_PREVIEW_LIMIT = 8;
+
+/*
+ * API.
+ */
 
 /** Fuzzysort public projects with scores (empty query returns []). */
 export function searchPublicProjectsScored(
