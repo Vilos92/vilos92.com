@@ -26,7 +26,21 @@ const REPO_TS_FMT_OPTIONS = {
  */
 
 export default defineConfig({
-  plugins: isVitest ? [tsconfigPaths()] : [cloudflare(), vanillaExtractPlugin(), preact(), tsconfigPaths()],
+  plugins: isVitest
+    ? [tsconfigPaths()]
+    : [
+        cloudflare(),
+        vanillaExtractPlugin(),
+        preact({
+          prerender: {
+            enabled: true,
+            renderTarget: '#root',
+            additionalPrerenderRoutes: ['/'],
+            previewMiddlewareEnabled: true
+          }
+        }),
+        tsconfigPaths()
+      ],
   staged: {
     '*': 'vp check --fix'
   },
