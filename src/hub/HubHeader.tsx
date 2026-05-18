@@ -15,7 +15,6 @@ export function HubHeader() {
           <span className={styles.visuallyHidden}> on GitHub (opens in new tab)</span>
         </a>
       </h1>
-      <p className={styles.tagline}>Jump to a public repo by slug</p>
     </header>
   );
 }

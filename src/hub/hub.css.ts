@@ -63,18 +63,6 @@ export const siteTitle = style({
   }
 });
 
-export const tagline = style({
-  margin: '0.25rem 0 0',
-  fontSize: '0.875rem',
-  color: palette.textSubtle,
-  textAlign: 'center',
-  '@media': {
-    '(pointer: coarse)': {
-      textAlign: 'left'
-    }
-  }
-});
-
 export const search = style({
   position: 'relative',
   width: '100%',

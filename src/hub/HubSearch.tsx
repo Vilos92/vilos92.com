@@ -70,7 +70,7 @@ function HubResults({matches, showEmptyState, trimmedQuery}: HubResultsProps) {
     <ul aria-label={showEmptyState ? 'No matching projects' : 'Matching projects'} className={styles.results}>
       {showEmptyState ? (
         <li className={styles.emptyMessage} role="presentation">
-          No public project matches &ldquo;{trimmedQuery}&rdquo;
+          No project matches &ldquo;{trimmedQuery}&rdquo;
         </li>
       ) : (
         matches.map(project => (
