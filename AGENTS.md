@@ -16,28 +16,13 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 
 Use `/* Section name. */` blocks. Read top-down: main entry first, **Helpers.** last.
 
-**Order** (omit unused sections; never add empty **Types.** / **Helpers.** blocks):
+**Order** (omit unused sections): **Constants.** · **Types.** · **Route.** / **API.** / **Script.** · **Helpers.**
 
-1. **Types.** · **Constants.** — swap when paths or literals must come first; use **Types.** when the file defines top-level types
-2. **Route.** · **API.** · **Script.** — the file’s main entry (`src/worker.ts` → **API.**; `src/hub-app.ts` and `scripts/*.ts` → **Script.**)
-3. **Helpers.** — private helpers only; always after the main entry
+**Constants.** — module-level `const` and `export const` (config, parsed JSON, derived lists). **API.** — exported **functions** and file entry points (`src/worker.ts` → **API.**; `src/hub-app.ts` → **Script.**). Do not label `export const` blocks **API.**
 
-**Scripts** stack **Constants.** → **Types.** → **Script.** → **Helpers.** Module-level `const` the script needs live in **Constants.**; only `function` helpers may follow **Script.** (hoisting).
-
-**Lean files** (one export, few lines): a single **API.** or **Script.** block is enough—no empty **Types.** / **Helpers.** wrappers.
-
-**Tests** (`*.test.ts`): put shared fixtures in **Constants.**; `describe` / `test` blocks are the entry (no **Tests.** wrapper unless the file is large).
+**Zod:** **Schemas.** → **Runtime types.** → **Constants.** (`parse` / `safeParse` results and other `export const`). Schemas stay module-private unless another file imports them.
 
 Blank line before and after each section block, and between the comment and the code below it.
-
-## TypeScript
-
-- Prefer **`type` over `interface`** unless you truly need declaration merging (we do not).
-- Prefer **`undefined` over `null`**. Model absence as `undefined` in app and AI shapes; use **`.optional()`** in Zod, not **`.nullable().optional()`**. Use **`toSqlNull()`** (`#/lib/nullish`) only at Drizzle write boundaries where the column must be SQL `NULL`. Do not use `?? null` in app code unless a type contract explicitly requires `null` (rare). Do not add helpers to map `null` → `undefined`; type app surfaces without `null` so conversion stays rare.
-- **`??` vs `||`:** use **`??`** to default `null`/`undefined` only. Reserve **`||`** for boolean conditions and deliberate truthiness (e.g. `disabled={isSaving || isDeleting}`). Treating `''` as absent belongs in **`trimmedOrUndefined()`**, not `value || fallback`.
-- **Avoid redundant nullish coalescing:** do not write `x ?? undefined` when `x` is already `T | undefined` with no `null`.
-- **Exports:** do not export types, functions, or constants unless another file imports them (or we deliberately expose a stable public API). Prefer module-private symbols until then.
-- **`?` vs `| undefined`:** use optional properties (`prop?:`) only when callers often omit the key entirely (e.g. wide public or library-style surfaces). For **internal** components and modules, prefer required keys with `T | undefined` when a value may be absent—every call site passes the prop explicitly, and “missing meaning” is modeled as `undefined`, not “key not passed.”
 
 ## Project hub (`src/projects.json`)
 
