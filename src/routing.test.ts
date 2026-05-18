@@ -25,6 +25,12 @@ const FIXTURE_PROJECTS: Project[] = [
     name: 'cynth',
     githubUrl: 'https://github.com/Vilos92/cynth',
     private: true
+  },
+  {
+    slug: 'vilos92.com',
+    name: 'vilos92.com',
+    githubUrl: 'https://github.com/Vilos92/vilos92.com',
+    private: true
   }
 ];
 
@@ -131,7 +137,7 @@ describe('resolveSlugOpenWithProjects', () => {
   });
 
   test('opens private slug when only dots differ', () => {
-    expect(resolveSlugOpen('vilos92com')).toEqual({
+    expect(resolveSlugOpenWithProjects(FIXTURE_PROJECTS, 'vilos92com')).toEqual({
       kind: 'open',
       slug: 'vilos92.com',
       name: 'vilos92.com',

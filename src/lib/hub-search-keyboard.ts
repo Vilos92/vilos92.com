@@ -9,12 +9,12 @@ import {nextMatchIndex} from '@/lib/hub-search-list';
 export type MatchListKeySource = 'input' | 'option';
 
 type MatchListKeyboardContext = {
-  activeIndex: number | null;
+  activeIndex: number | undefined;
   hasMatches: boolean;
   inputRef: RefObject<HTMLInputElement | null>;
   matchCount: number;
   optionRefs: RefObject<Array<HTMLButtonElement | null>>;
-  setActiveIndex: (index: number | null) => void;
+  setActiveIndex: (index: number | undefined) => void;
 };
 
 /*
@@ -32,7 +32,7 @@ export function handleMatchListKeyDown(
   }
 
   if (key === 'Escape') {
-    context.setActiveIndex(null);
+    context.setActiveIndex(undefined);
     if (source === 'option') {
       context.inputRef.current?.focus();
     }

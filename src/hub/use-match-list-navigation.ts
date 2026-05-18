@@ -8,17 +8,17 @@ import type {Project} from '@/lib/projects';
 
 /** Highlight index and option refs for the public project match list. */
 export function useMatchListNavigation(matches: Project[]) {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number | undefined>(undefined);
   const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const hasMatches = matches.length > 0;
 
   useEffect(() => {
-    setActiveIndex(hasMatches ? 0 : null);
+    setActiveIndex(hasMatches ? 0 : undefined);
     optionRefs.current = [];
   }, [matches, hasMatches]);
 
   useEffect(() => {
-    if (activeIndex === null) {
+    if (activeIndex === undefined) {
       return;
     }
 

@@ -38,7 +38,7 @@ describe('handleMatchListKeyDown', () => {
     });
 
     expect(handled).toBe(true);
-    expect(setActiveIndex).toHaveBeenCalledWith(null);
+    expect(setActiveIndex).toHaveBeenCalledWith(undefined);
     expect(focus).toHaveBeenCalled();
   });
 });

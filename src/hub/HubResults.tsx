@@ -10,7 +10,7 @@ import * as styles from '@/hub/hub.css';
  */
 
 type HubResultsProps = {
-  activeIndex: number | null;
+  activeIndex: number | undefined;
   isResolving: boolean;
   listboxId: string;
   matches: Project[];

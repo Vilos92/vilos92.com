@@ -11,13 +11,14 @@ import type {Project} from '@/lib/projects';
  */
 
 type HubSearchActionDeps = {
-  activeIndex: number | null;
+  activeIndex: number | undefined;
   clearResolveState: () => void;
   hasMatches: boolean;
   inputRef: RefObject<HTMLInputElement | null>;
+  isResolving: boolean;
   matches: Project[];
   optionRefs: RefObject<Array<HTMLButtonElement | null>>;
-  setActiveIndex: (index: number | null) => void;
+  setActiveIndex: (index: number | undefined) => void;
   setIsResolving: (isResolving: boolean) => void;
   setResolveError: (message: string | undefined) => void;
   setSubmitRejected: (submitRejected: boolean) => void;
@@ -36,6 +37,10 @@ export function createHubSearchActions(deps: HubSearchActionDeps) {
   };
 
   const openSlug = (slug: string) => {
+    if (deps.isResolving) {
+      return;
+    }
+
     void requestOpenProjectSlug(slug, {
       setSubmitRejected: deps.setSubmitRejected,
       setResolveError: deps.setResolveError,
@@ -44,6 +49,10 @@ export function createHubSearchActions(deps: HubSearchActionDeps) {
   };
 
   const submitQuery = () => {
+    if (deps.isResolving) {
+      return;
+    }
+
     if (!deps.trimmedQuery) {
       clearSearchUrl();
       return;

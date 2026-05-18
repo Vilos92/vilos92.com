@@ -5,7 +5,7 @@ import {HUB_PROJECT_LISTBOX_ID, hubProjectOptionId} from '@/lib/hub-search-list'
  */
 
 type ComboboxA11yInput = {
-  activeIndex: number | null;
+  activeIndex: number | undefined;
   inputDescribedBy: string;
   listboxOpen: boolean;
 };
@@ -18,7 +18,9 @@ type ComboboxA11yInput = {
 export function hubComboboxInputA11y(input: ComboboxA11yInput) {
   return {
     'aria-activedescendant':
-      input.activeIndex !== null && input.listboxOpen ? hubProjectOptionId(input.activeIndex) : undefined,
+      input.activeIndex !== undefined && input.listboxOpen
+        ? hubProjectOptionId(input.activeIndex)
+        : undefined,
     'aria-autocomplete': 'list' as const,
     'aria-controls': input.listboxOpen ? HUB_PROJECT_LISTBOX_ID : undefined,
     'aria-describedby': input.inputDescribedBy,

@@ -28,7 +28,7 @@ const MATCHES: Project[] = [
 
 describe('nextMatchIndex', () => {
   test('moves down and up within bounds', () => {
-    expect(nextMatchIndex('ArrowDown', 2, null)).toBe(0);
+    expect(nextMatchIndex('ArrowDown', 2, undefined)).toBe(0);
     expect(nextMatchIndex('ArrowDown', 2, 0)).toBe(1);
     expect(nextMatchIndex('ArrowUp', 2, 1)).toBe(0);
   });
@@ -37,6 +37,6 @@ describe('nextMatchIndex', () => {
 describe('highlightedProject', () => {
   test('prefers the active row, then the first match', () => {
     expect(highlightedProject(MATCHES, 1)?.slug).toBe('clock');
-    expect(highlightedProject(MATCHES, null)?.slug).toBe('dotfiles');
+    expect(highlightedProject(MATCHES, undefined)?.slug).toBe('dotfiles');
   });
 });

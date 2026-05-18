@@ -19,7 +19,7 @@ export function hubProjectOptionId(index: number): string {
 export function nextMatchIndex(
   key: string,
   matchCount: number,
-  activeIndex: number | null
+  activeIndex: number | undefined
 ): number | undefined {
   if (matchCount === 0) {
     return undefined;
@@ -47,8 +47,8 @@ export function nextMatchIndex(
 }
 
 /** Project to open on submit: active row, else first match, else `undefined`. */
-export function highlightedProject(matches: Project[], activeIndex: number | null): Project | undefined {
-  if (activeIndex !== null && activeIndex < matches.length) {
+export function highlightedProject(matches: Project[], activeIndex: number | undefined): Project | undefined {
+  if (activeIndex !== undefined && activeIndex < matches.length) {
     return matches[activeIndex];
   }
 

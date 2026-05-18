@@ -68,6 +68,7 @@ export function useHubSearch() {
         clearResolveState,
         hasMatches,
         inputRef,
+        isResolving,
         matches,
         optionRefs,
         setActiveIndex,
@@ -76,7 +77,7 @@ export function useHubSearch() {
         setSubmitRejected,
         trimmedQuery: display.trimmedQuery
       }),
-    [activeIndex, clearResolveState, display.trimmedQuery, hasMatches, matches]
+    [activeIndex, clearResolveState, display.trimmedQuery, hasMatches, isResolving, matches]
   );
 
   return {
