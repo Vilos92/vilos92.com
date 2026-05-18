@@ -10,7 +10,7 @@ disable-model-invocation: true
 # Sync projects.json
 
 List repos with **GitHub MCP**, then write or skip `src/projects.json`. Validate
-with `vp check` and `vp test`.
+with `vp check`, `vp test`, and `bun run fallow:audit`.
 
 ## One-shot workflow
 
@@ -74,16 +74,18 @@ Shape (matches `src/lib/projects.ts` `Project` type):
 ```bash
 vp check
 vp test
+bun run fallow:audit
 ```
 
-Run from repo root. Both must pass before you commit or mark a dex task done.
+Run from repo root. All must pass before you commit or mark a dex task done.
 
 ### 5. Dex tasks (optional)
 
 `gdex greg complete <id> --result "..."` only when MCP sync succeeded (file
-updated or already correct) **and** `vp check` and `vp test` passed.
+updated or already correct) **and** validation passed (`vp check`, `vp test`,
+`bun run fallow:audit`).
 
-Example result: `projects.json in sync (52 projects); vp check and vp test passed.`
+Example result: `projects.json in sync (52 projects); vp check, vp test, and fallow:audit passed.`
 
 Commit only if `src/projects.json` changed and validation passed.
 
@@ -91,18 +93,18 @@ Commit only if `src/projects.json` changed and validation passed.
 
 Copy this prompt to run the skill end-to-end:
 
-```
+```text
 Work on gdex task evdimxnk (greg profile). Run `gdex greg show evdimxnk --full` first.
 
 Then immediately:
 1. Read and follow `.cursor/skills/sync-projects-json/SKILL.md` (sync-projects-json skill).
-2. From the vilos92.com repo root, follow the skill: GitHub MCP sync of `src/projects.json`, then `vp check` and `vp test`.
+2. From the vilos92.com repo root, follow the skill: GitHub MCP sync of `src/projects.json`, then `vp check`, `vp test`, and `bun run fallow:audit`.
 
-If MCP sync succeeded (file updated or already in sync) and `vp check` and `vp test` pass, mark the task done:
+If MCP sync succeeded (file updated or already in sync) and validation passed, mark the task done:
 
-   gdex greg complete evdimxnk --result "projects.json in sync (N projects); vp check and vp test passed."
+   gdex greg complete evdimxnk --result "projects.json in sync (N projects); vp check, vp test, and fallow:audit passed."
 
-If anything fails, do not complete the task—report what failed (MCP auth, JSON diff, tests, etc.).
+If anything fails, do not complete the task—report what failed (MCP auth, JSON diff, tests, fallow, etc.).
 ```
 
 ## Field rules (reference)
@@ -113,11 +115,11 @@ If anything fails, do not complete the task—report what failed (MCP auth, JSON
 
 ## Troubleshooting
 
-| Problem                     | Action                                                             |
-| --------------------------- | ------------------------------------------------------------------ |
-| MCP auth / tool errors      | Fix GitHub MCP credentials in Cursor; retry `search_repositories`. |
-| Count mismatch vs GitHub    | Re-run with pagination; confirm `fork:false` in query.             |
-| `vp check` / `vp test` fail | Fix code or formatting; do not mark dex task complete.             |
+| Problem                  | Action                                                             |
+| ------------------------ | ------------------------------------------------------------------ |
+| MCP auth / tool errors   | Fix GitHub MCP credentials in Cursor; retry `search_repositories`. |
+| Count mismatch vs GitHub | Re-run with pagination; confirm `fork:false` in query.             |
+| Validation fails         | Fix code, formatting, or fallow findings; do not mark dex done.    |
 
 ## Related files
 
