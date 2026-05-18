@@ -18,6 +18,7 @@ if (typeof document !== 'undefined') {
   hydrate(<HubApp />, root);
 }
 
+/** Build-time hook. Renders `HubApp` to HTML for the prerender pipeline. */
 export async function prerender() {
   return {html: renderToString(<HubApp />)};
 }
