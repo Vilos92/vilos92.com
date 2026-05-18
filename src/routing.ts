@@ -1,13 +1,21 @@
-import {projects} from './projects.ts';
-import type {Project} from './projects.ts';
-import {findFuzzyPublicProject} from './slug-fuzzy.ts';
+import {projects} from '@/lib/projects';
+import type {Project} from '@/lib/projects';
+import {fuzzyFindPublicProject} from '@/lib/slug-fuzzy';
 
-export type RedirectResult = {kind: 'redirect'; location: string} | {kind: 'not_found'; slug: string};
+/*
+ * Types.
+ */
 
-/** Resolve /:slug (not /) to a redirect target or 404. */
+type RedirectResult = {kind: 'redirect'; location: string} | {kind: 'not_found'; slug: string};
+
+/*
+ * API.
+ */
+
+/** Resolve `/:slug` (not `/`) to a redirect target or `404`. */
 export function resolveSlugPathWithProjects(
-  pathname: string,
-  projectList: readonly Project[]
+  projectList: readonly Project[],
+  pathname: string
 ): RedirectResult {
   const path = pathname.replace(/\/+$/, '') || '/';
 
@@ -27,7 +35,7 @@ export function resolveSlugPathWithProjects(
     return {kind: 'redirect', location: exact.githubUrl};
   }
 
-  const fuzzy = findFuzzyPublicProject(normalized, projectList);
+  const fuzzy = fuzzyFindPublicProject(projectList, normalized);
   if (fuzzy) {
     return {kind: 'redirect', location: fuzzy.githubUrl};
   }
@@ -35,13 +43,7 @@ export function resolveSlugPathWithProjects(
   return {kind: 'not_found', slug};
 }
 
-/** @deprecated Use resolveSlugPathWithProjects; kept as alias for tests. */
-export const resolvePathWithProjects = resolveSlugPathWithProjects;
-
-/** Resolve a slug path to a redirect target or 404. */
+/** Resolve a slug path to a redirect target or `404`. */
 export function resolveSlugPath(pathname: string): RedirectResult {
-  return resolveSlugPathWithProjects(pathname, projects);
+  return resolveSlugPathWithProjects(projects, pathname);
 }
-
-/** @deprecated Use resolveSlugPath. */
-export const resolvePath = resolveSlugPath;

@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "fuzzysort": "^3.1.0",
-    "hono": "^4.11.4"
+    "hono": "^4.11.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.35.0",
@@ -28,6 +29,7 @@
     "typescript": "~6.0.2",
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
     "vite-plus": "latest",
+    "vite-tsconfig-paths": "^6.1.1",
     "wrangler": "^4.87.0"
   },
   "overrides": {

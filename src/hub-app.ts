@@ -1,6 +1,35 @@
-import './hub.css';
-import {publicProjects} from './projects.ts';
-import {searchPublicProjects} from './search-public.ts';
+import '@/hub.css';
+import {GITHUB_PROFILE_URL} from '@/lib/github';
+import {searchPublicProjects} from '@/lib/project-search';
+import {publicProjects} from '@/lib/projects';
+
+/*
+ * Constants.
+ */
+
+const form = requireElement<HTMLFormElement>('#go');
+const input = requireElement<HTMLInputElement>('#slug');
+const resultsEl = requireElement<HTMLUListElement>('#results');
+const siteTitle = requireElement<HTMLAnchorElement>('.site-title');
+
+/*
+ * Script.
+ */
+
+siteTitle.href = GITHUB_PROFILE_URL;
+
+input.addEventListener('input', () => {
+  renderResults(input.value);
+});
+
+form.addEventListener('submit', submitEvent => {
+  submitEvent.preventDefault();
+  goToSlug(input.value);
+});
+
+/*
+ * Helpers.
+ */
 
 function requireElement<T extends Element>(selector: string): T {
   const element = document.querySelector<T>(selector);
@@ -9,10 +38,6 @@ function requireElement<T extends Element>(selector: string): T {
   }
   return element;
 }
-
-const form = requireElement<HTMLFormElement>('#go');
-const input = requireElement<HTMLInputElement>('#slug');
-const resultsEl = requireElement<HTMLUListElement>('#results');
 
 function openInNewTab(url: string) {
   globalThis.open(url, '_blank', 'noopener,noreferrer');
@@ -42,7 +67,7 @@ function newTabHint(): HTMLSpanElement {
 }
 
 function renderResults(query: string) {
-  const matches = searchPublicProjects(query, publicProjects);
+  const matches = searchPublicProjects(publicProjects, query);
   resultsEl.replaceChildren(
     ...matches.map(project => {
       const item = document.createElement('li');
@@ -59,12 +84,3 @@ function renderResults(query: string) {
     })
   );
 }
-
-input.addEventListener('input', () => {
-  renderResults(input.value);
-});
-
-form.addEventListener('submit', event => {
-  event.preventDefault();
-  goToSlug(input.value);
-});

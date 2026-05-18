@@ -1,19 +1,27 @@
 import fuzzysort from 'fuzzysort';
 
-import type {Project} from './projects.ts';
+import type {Project} from '@/lib/projects';
 
-/** Minimum fuzzysort score (0–1) for a match. */
+/*
+ * Constants.
+ */
+
+/** Minimum `fuzzysort` score (0–1) for a match; see `FUZZY_MIN_SCORE`. */
 export const FUZZY_MIN_SCORE = 0.5;
 
-/** Top two slug matches must differ by at least this much or routing treats the match as ambiguous. */
+/** Top-two slug matches must differ by at least `FUZZY_SCORE_GAP` or `routing` treats the match as ambiguous. */
 export const FUZZY_SCORE_GAP = 0.15;
 
-export const HUB_PREVIEW_LIMIT = 8;
+const HUB_PREVIEW_LIMIT = 8;
 
-/** Fuzzysort public projects with scores (empty query returns []). */
+/*
+ * Helpers.
+ */
+
+/** `fuzzysort` public projects with scores; empty `query` returns `[]`. */
 export function searchPublicProjectsScored(
-  query: string,
   projects: readonly Project[],
+  query: string,
   limit = HUB_PREVIEW_LIMIT
 ) {
   const trimmed = query.trim();
@@ -30,11 +38,11 @@ export function searchPublicProjectsScored(
   });
 }
 
-/** Fuzzysort public projects for hub preview. */
+/** `fuzzysort` public `Project`s for hub preview. */
 export function searchPublicProjects(
-  query: string,
   projects: readonly Project[],
+  query: string,
   limit = HUB_PREVIEW_LIMIT
 ): Project[] {
-  return searchPublicProjectsScored(query, projects, limit).map(result => result.obj);
+  return searchPublicProjectsScored(projects, query, limit).map(result => result.obj);
 }

@@ -43,16 +43,12 @@ jobs:
 
   fallow:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
 
     steps:
       - uses: actions/checkout@v4
         with:
+          # `audit` needs a merge base; depth-1 checkout has no local `main` ref
           fetch-depth: 0
       - uses: ./.github/actions/install-bun-and-dependencies
-      - uses: fallow-rs/fallow@v2
-        with:
-          command: audit
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Fallow audit
+        run: bun run fallow:audit -- --base ${{ github.event.pull_request.base.sha || 'origin/main' }}

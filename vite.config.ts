@@ -1,5 +1,10 @@
 import {cloudflare} from '@cloudflare/vite-plugin';
 import {defineConfig} from 'vite-plus';
+import tsconfigPaths from 'vite-tsconfig-paths';
+
+/*
+ * Constants.
+ */
 
 const isVitest = process.env.VITEST === 'true';
 
@@ -14,8 +19,12 @@ const REPO_TS_FMT_OPTIONS = {
   sortImports: true
 };
 
+/*
+ * API.
+ */
+
 export default defineConfig({
-  plugins: isVitest ? [] : [cloudflare()],
+  plugins: isVitest ? [tsconfigPaths()] : [cloudflare(), tsconfigPaths()],
   staged: {
     '*': 'vp check --fix'
   },
