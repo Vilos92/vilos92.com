@@ -9,7 +9,7 @@ import {fuzzyFindPublicProject} from '@/lib/slug-fuzzy';
 type RedirectResult = {kind: 'redirect'; location: string} | {kind: 'not_found'; slug: string};
 
 /*
- * API.
+ * Helpers.
  */
 
 /** Resolve `/:slug` (not `/`) to a redirect target or `404`. */

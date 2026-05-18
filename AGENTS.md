@@ -9,7 +9,7 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 ## Review Checklist
 
 - [ ] Run `vp install` after pulling remote changes and before getting started.
-- [ ] Before commit (and after large / high-impact edits), run the **Validation** loop; fix failures before continuing.
+- [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
 - [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
 <!--VITE PLUS END-->
@@ -34,7 +34,7 @@ Living conventions for this repo. Order and wording can evolve—ask whether new
 
 ## Imports
 
-- **`@/*` → `./src/*`** in `tsconfig` `paths`. Import every `src/` module via `@/` (`@/lib/projects`, `@/hub.css`); no relative paths between `src/` files.
+- **`@/*` → `./src/*`** in `tsconfig` `paths`. Import every `src/` module via `@/` (`@/lib/projects`, `@/hub/HubApp`); no relative paths between `src/` files.
 - No **`.ts` / `.tsx`** suffixes on import paths (`allowImportingTsExtensions: false`).
 
 ## File layout (section comments)
@@ -43,15 +43,20 @@ Use `/* Section name. */` blocks. Read top-down: main entry first, **Helpers.** 
 
 **Order** (omit unused sections; never add empty **Types.** / **Helpers.** blocks):
 
-1. **Schemas.** · **Runtime types.** · **Types.** · **Constants.** — Zod files: **Schemas.** → **Runtime types.** → **Constants.** (`parse` / `safeParse`); use **Types.** when the file defines hand-written top-level types
-2. **Route.** · **API.** · **Script.** — file entry (`worker.ts` → **API.**; `hub-app.ts` → **Script.**; `routing.ts` → **API.**)
-3. **Helpers.** — functions other modules import (`lib/project-search.ts`, `lib/slug-fuzzy.ts`) and private helpers (always last)
+1. **Schemas.** · **Runtime types.** · **Types.** · **Constants.** — Zod/data: **Schemas.** → **Runtime types.** → **Constants.** (`parse` / `safeParse`); hand-written top-level types use **Types.** (e.g. `routing.ts`)
+2. Entry surface (one per file — pick what matches):
+   - **API.** — Hono worker HTTP entry only (`worker.ts` default export)
+   - **Script.** — browser bootstrap (`hub-app.tsx`)
+   - **Component.** — Preact UI (`Hub*.tsx`)
+   - **Styles.** — Vanilla Extract (`*.css.ts`, including `global.css.ts`)
+   - **Config.** — tooling default export (`vite.config.ts`)
+3. **Helpers.** — functions other modules import (`routing.ts`, `lib/project-search.ts`, `lib/slug-fuzzy.ts`) and private helpers in the same file (always last)
 
-**Constants.** — module-level `const` / `export const`. Do not label `export const` **API.** or cross-module helper files **API.**
+**Constants.** — module-level `const` / `export const` (e.g. `lib/github.ts`, `hub/tokens.ts`). Do not use **API.** for constants, shared libraries, or UI.
 
-**Scripts** (`vite.config.ts`): **Constants.** → **API.** (default export). Module-level `const` above the entry; only `function` helpers may follow (hoisting).
+**Config** (`vite.config.ts`): **Constants.** → **Config.** (default export). Module-level `const` above the entry; only `function` helpers may follow (hoisting).
 
-**Lean files** (one export, few lines): a single **API.** or **Script.** block is enough.
+**Lean files** (one export, few lines): one matching entry block (**API.**, **Script.**, **Component.**, **Config.**, etc.) is enough.
 
 **Tests:** one `{module}.test.ts` per module under test (`routing.test.ts` → `routing.ts`, `lib/slug-fuzzy.test.ts` → `lib/slug-fuzzy.ts`). **Constants.** (fixtures) → **Tests.** (`describe` / `test`).
 
@@ -90,7 +95,7 @@ Blank line before and after each section block, and between the comment and the 
 2. `vp test`
 3. `bun run fallow:audit` — dead code, unused exports, baselines (CI passes `--base`; see workflow)
 
-**Findings:** fix—wire code, add `.fallowrc.jsonc` `entry` (`src/worker.ts`, `src/hub-app.ts`), or delete. Do not suppress to greenwash.
+**Findings:** fix—wire code, add `.fallowrc.jsonc` `entry` (`src/worker.ts`, `src/hub-app.tsx`), or delete. Do not suppress to greenwash.
 
 **Must ignore?** Ask the human first; aim for a healthy codebase, not a quiet audit.
 
