@@ -1,10 +1,15 @@
 import {style} from '@vanilla-extract/css';
 
+import {touchLayout} from '@/hub/hub-media';
 import {palette} from '@/hub/tokens';
 
 /*
  * Styles.
  */
+
+const searchClearIcon = encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#9490a8"><path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L8.94 10l-4.72 4.72a.75.75 0 1 0 1.06 1.06L10 11.06l4.72 4.72a.75.75 0 1 0 1.06-1.06L11.06 10l4.72-4.72a.75.75 0 0 0-1.06-1.06L10 8.94 5.28 4.22Z"/></svg>'
+);
 
 export const main = style({
   display: 'flex',
@@ -13,7 +18,7 @@ export const main = style({
   width: 'min(24rem, 92vw)',
   minWidth: 0,
   '@media': {
-    '(pointer: coarse)': {
+    [touchLayout]: {
       flex: 1,
       alignItems: 'stretch',
       width: '100%',
@@ -23,24 +28,24 @@ export const main = style({
 });
 
 export const header = style({
-  marginBottom: '1rem',
+  marginBottom: '1.25rem',
   width: '100%',
   '@media': {
-    '(pointer: coarse)': {
+    [touchLayout]: {
       flexShrink: 0,
-      marginBottom: '0.75rem'
+      marginBottom: '0.875rem'
     }
   }
 });
 
 export const title = style({
   margin: 0,
-  fontSize: '1.25rem',
+  fontSize: '1.375rem',
   fontWeight: 600,
-  letterSpacing: '-0.02em',
+  letterSpacing: '-0.03em',
   textAlign: 'center',
   '@media': {
-    '(pointer: coarse)': {
+    [touchLayout]: {
       textAlign: 'left'
     }
   }
@@ -52,25 +57,10 @@ export const siteTitle = style({
   borderRadius: '0.25rem',
   selectors: {
     '&:hover': {
-      textDecoration: 'underline',
-      textDecorationColor: palette.textSubtle,
-      textUnderlineOffset: '0.2em'
+      color: palette.accentHover
     },
     '&:focus-visible': {
-      outline: `2px solid ${palette.textSubtle}`,
-      outlineOffset: '3px'
-    }
-  }
-});
-
-export const tagline = style({
-  margin: '0.25rem 0 0',
-  fontSize: '0.875rem',
-  color: palette.textSubtle,
-  textAlign: 'center',
-  '@media': {
-    '(pointer: coarse)': {
-      textAlign: 'left'
+      outlineOffset: '2px'
     }
   }
 });
@@ -80,7 +70,7 @@ export const search = style({
   width: '100%',
   minWidth: 0,
   '@media': {
-    '(pointer: coarse)': {
+    [touchLayout]: {
       display: 'flex',
       flex: 1,
       flexDirection: 'column',
@@ -92,7 +82,12 @@ export const search = style({
 export const form = style({
   display: 'flex',
   gap: '0.5rem',
-  flexShrink: 0
+  flexShrink: 0,
+  '@media': {
+    [touchLayout]: {
+      gap: '0.625rem'
+    }
+  }
 });
 
 export const visuallyHidden = style({
@@ -110,78 +105,112 @@ export const visuallyHidden = style({
 export const input = style({
   flex: 1,
   minWidth: 0,
-  padding: '0.6rem 0.75rem',
-  border: `1px solid ${palette.border}`,
-  borderRadius: '0.375rem',
+  padding: '0.625rem 0.75rem',
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  borderColor: palette.border,
+  borderRadius: '0.5rem',
   background: palette.surface,
   color: 'inherit',
   font: 'inherit',
+  fontSize: '1rem',
+  lineHeight: 1.5,
   outline: 'none',
   selectors: {
     '&::placeholder': {
-      color: palette.textSubtle
+      color: palette.textSubtle,
+      opacity: 1
     },
-    '&:focus': {
-      borderColor: palette.borderFocus,
-      boxShadow: `0 0 0 2px ${palette.focusRing}`
+    '&:focus-visible': {
+      borderColor: palette.accent,
+      outline: 'none'
+    },
+    '&::-webkit-search-cancel-button': {
+      WebkitAppearance: 'none',
+      height: '1.125rem',
+      width: '1.125rem',
+      marginInlineEnd: '0.125rem',
+      cursor: 'pointer',
+      backgroundImage: `url("data:image/svg+xml,${searchClearIcon}")`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      backgroundSize: '1.125rem'
+    },
+    '&::-webkit-search-decoration': {
+      WebkitAppearance: 'none'
     }
   },
   '@media': {
-    '(pointer: coarse)': {
-      minHeight: '2.75rem'
+    [touchLayout]: {
+      minHeight: '2.75rem',
+      padding: '0.75rem'
     }
   }
 });
 
 export const submitButton = style({
   flexShrink: 0,
-  padding: '0.6rem 1rem',
+  minWidth: '3.25rem',
+  padding: '0.625rem 1.125rem',
   border: 0,
-  borderRadius: '0.375rem',
+  borderRadius: '0.5rem',
   background: palette.buttonBg,
   color: palette.buttonText,
   font: 'inherit',
+  fontSize: '1rem',
   fontWeight: 600,
+  lineHeight: 1.5,
   cursor: 'pointer',
   transition: 'background 120ms ease',
   selectors: {
     '&:hover:not(:disabled)': {
-      background: '#ffffff'
-    },
-    '&:focus-visible': {
-      outline: `2px solid ${palette.borderFocus}`,
-      outlineOffset: '2px'
+      background: palette.buttonHover
     },
     '&:disabled': {
       cursor: 'not-allowed',
-      opacity: 0.4
+      background: palette.buttonDisabledBg,
+      color: palette.buttonDisabledText
+    },
+    '&[data-empty="true"]': {
+      cursor: 'not-allowed',
+      background: palette.buttonDisabledBg,
+      color: palette.buttonDisabledText,
+      pointerEvents: 'none'
+    },
+    '&[data-resolving="true"]': {
+      cursor: 'wait',
+      opacity: 0.85,
+      pointerEvents: 'none'
     }
   },
   '@media': {
-    '(pointer: coarse)': {
-      minHeight: '2.75rem'
+    '(prefers-reduced-motion: reduce)': {
+      transition: 'none'
+    },
+    [touchLayout]: {
+      minHeight: '2.75rem',
+      padding: '0.75rem 1.25rem'
     }
   }
 });
 
-export const results = style({
+export const searchPanel = style({
   position: 'absolute',
   top: 'calc(100% + 0.5rem)',
   right: 0,
   left: 0,
   zIndex: 10,
-  margin: 0,
-  padding: 0,
   maxHeight: 'min(18rem, 40dvh)',
-  listStyle: 'none',
   overflowX: 'hidden',
   overflowY: 'auto',
+  overscrollBehavior: 'contain',
   border: `1px solid ${palette.border}`,
-  borderRadius: '0.375rem',
+  borderRadius: '0.5rem',
   background: palette.surface,
-  boxShadow: '0 12px 32px rgb(0 0 0 / 0.45)',
+  boxShadow: palette.shadow,
+  WebkitOverflowScrolling: 'touch',
   '@media': {
-    '(pointer: coarse)': {
+    [touchLayout]: {
       position: 'static',
       flex: 1,
       minHeight: 0,
@@ -192,23 +221,46 @@ export const results = style({
   }
 });
 
-export const resultLink = style({
+export const results = style({
+  margin: 0,
+  padding: 0,
+  listStyle: 'none'
+});
+
+export const resultOption = style({
   display: 'block',
+  width: '100%',
+  minHeight: '2.75rem',
   padding: '0.5rem 0.75rem',
+  border: 0,
+  borderRadius: '0.25rem',
+  background: 'transparent',
   color: 'inherit',
-  textDecoration: 'none',
+  font: 'inherit',
+  fontSize: '1rem',
+  lineHeight: 1.4,
+  textAlign: 'left',
+  cursor: 'pointer',
   selectors: {
     '&:hover': {
       background: palette.surfaceHover
     },
     '&:focus-visible': {
-      background: palette.surfaceHover,
-      outline: 'none'
+      outlineOffset: '-1px'
     }
   },
   '@media': {
-    '(pointer: coarse)': {
+    [touchLayout]: {
       padding: '0.75rem 1rem'
+    }
+  }
+});
+
+export const resultOptionActive = style({
+  background: palette.surfaceHover,
+  selectors: {
+    '&:focus-visible': {
+      background: palette.surfaceHover
     }
   }
 });
@@ -224,8 +276,28 @@ export const resultSlug = style({
   color: palette.textMuted
 });
 
-export const emptyMessage = style({
+const panelMessage = {
+  margin: 0,
   padding: '0.75rem',
   fontSize: '0.875rem',
-  color: palette.textSubtle
+  lineHeight: 1.5,
+  color: palette.textMuted
+};
+
+export const noMatchesMessage = style({
+  ...panelMessage,
+  selectors: {
+    [`${searchPanel} &:not(:last-child)`]: {
+      borderBottom: `1px solid ${palette.border}`
+    }
+  }
+});
+
+export const resolveError = style({
+  ...panelMessage,
+  selectors: {
+    [`${searchPanel} &:not(:last-child)`]: {
+      borderBottom: `1px solid ${palette.border}`
+    }
+  }
 });

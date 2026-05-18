@@ -30,7 +30,7 @@ Living conventions for this repo. Order and wording can evolve—ask whether new
 - **`??` vs `||`:** use **`??`** to default `null`/`undefined` only. Reserve **`||`** for boolean conditions and deliberate truthiness (e.g. empty path → `'/'` after trim). Treating `''` as absent belongs in a named helper, not `value || fallback`.
 - **Avoid redundant nullish coalescing:** do not write `x ?? undefined` when `x` is already `T | undefined` with no `null`.
 - **Exports:** do not export types, functions, or constants unless another file imports them (or we deliberately expose a stable public API that is actually wired in).
-- **`?` vs `| undefined`:** use optional properties (`prop?:`) only when callers often omit the key; for internal modules prefer required keys with `T | undefined` when a value may be absent.
+- **`?` vs `| undefined`:** use optional properties (`prop?:`) when callers often omit the key entirely (e.g. wide public surfaces). For **internal** modules, prefer required keys with `T | undefined` when a value may be absent—call sites pass the prop explicitly, and absence is `undefined`, not “key not passed.” **Exception:** props normally omitted when unused—especially **`className?`** and other familiar DOM-style optional props—stay `prop?: T`; do not write `prop={undefined}` at call sites.
 
 ## Imports
 
