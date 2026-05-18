@@ -9,9 +9,14 @@ import * as styles from '@/hub/hub.css';
 
 export function HubApp() {
   return (
-    <main className={styles.main}>
-      <HubHeader />
-      <HubSearch />
-    </main>
+    <>
+      <a className="skip-link" href="#slug">
+        Skip to search
+      </a>
+      <main className={styles.main}>
+        <HubHeader />
+        <HubSearch />
+      </main>
+    </>
   );
 }

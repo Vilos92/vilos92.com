@@ -1,6 +1,6 @@
-import {describe, expect, test} from 'vite-plus/test';
+import {afterEach, describe, expect, test, vi} from 'vite-plus/test';
 
-import {HUB_SEARCH_QUERY_PARAM, hubSearchUrl, readHubSearchQuery} from '@/lib/hub-search';
+import {HUB_SEARCH_QUERY_PARAM, hubSearchUrl, readHubSearchQuery, syncHubSearchQuery} from '@/lib/hub-search';
 
 /*
  * Tests.
@@ -19,5 +19,21 @@ describe('readHubSearchQuery', () => {
 
   test('returns empty when q is absent', () => {
     expect(readHubSearchQuery('https://vilos92.com/')).toBe('');
+  });
+});
+
+describe('syncHubSearchQuery', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  test('removes q from the address bar when slug is empty', () => {
+    const replaceState = vi.fn();
+    vi.stubGlobal('location', new URL('https://vilos92.com/?q=dotfiles'));
+    vi.stubGlobal('history', {replaceState, state: null});
+
+    syncHubSearchQuery('');
+
+    expect(replaceState).toHaveBeenCalledWith(null, '', '/');
   });
 });
