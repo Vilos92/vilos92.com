@@ -1,7 +1,8 @@
 import {describe, expect, test} from 'vite-plus/test';
 
 import type {Project} from '@/lib/projects';
-import {fuzzyFindPublicProject} from '@/lib/slug-fuzzy';
+import {projects} from '@/lib/projects';
+import {findPrivateProjectBySlugQuery, fuzzyFindPublicProject} from '@/lib/slug-fuzzy';
 
 /*
  * Constants.
@@ -56,5 +57,15 @@ describe('fuzzyFindPublicProject', () => {
     expect(fuzzyFindPublicProject(FIXTURE_PROJECTS, 'cynht')).toBeUndefined();
     expect(fuzzyFindPublicProject(FIXTURE_PROJECTS, 'cynth')).toBeUndefined();
     expect(fuzzyFindPublicProject(FIXTURE_PROJECTS, 'dotfile')?.private).toBe(false);
+  });
+});
+
+describe('findPrivateProjectBySlugQuery', () => {
+  test('matches when only dots differ', () => {
+    expect(findPrivateProjectBySlugQuery(projects, 'vilos92com')?.slug).toBe('vilos92.com');
+  });
+
+  test('does not match fuzzy prefix', () => {
+    expect(findPrivateProjectBySlugQuery(projects, 'vil')).toBeUndefined();
   });
 });

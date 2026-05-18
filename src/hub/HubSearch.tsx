@@ -1,7 +1,9 @@
-import {useMemo, useState} from 'preact/hooks';
+import {useEffect, useMemo, useState} from 'preact/hooks';
 
+import {fetchHubResolve} from '@/lib/hub-resolve';
+import {HUB_SEARCH_QUERY_PARAM, readHubSearchQuery, syncHubSearchQuery} from '@/lib/hub-search';
 import {searchPublicProjects} from '@/lib/project-search';
-import {projects, publicProjects, type Project} from '@/lib/projects';
+import {publicProjects, type Project} from '@/lib/projects';
 
 import * as styles from '@/hub/hub.css';
 
@@ -10,20 +12,45 @@ import * as styles from '@/hub/hub.css';
  */
 
 export function HubSearch() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(() =>
+    typeof location === 'undefined' ? '' : readHubSearchQuery(location.href)
+  );
+  const [submitRejected, setSubmitRejected] = useState(false);
+  const [resolveError, setResolveError] = useState<string | undefined>(undefined);
+  const [isResolving, setIsResolving] = useState(false);
+
+  useEffect(() => {
+    const onPopState = () => {
+      setQuery(readHubSearchQuery(location.href));
+    };
+
+    addEventListener('popstate', onPopState);
+    return () => {
+      removeEventListener('popstate', onPopState);
+    };
+  }, []);
+
   const matches = useMemo(() => searchPublicProjects(publicProjects, query), [query]);
   const trimmedQuery = query.trim();
   const hasQuery = trimmedQuery.length > 0;
-  const showEmptyState = hasQuery && matches.length === 0;
-  const showResults = matches.length > 0 || showEmptyState;
+  const showNoMatches = hasQuery && (matches.length === 0 || submitRejected);
+  const showPanel = showNoMatches || matches.length > 0 || resolveError !== undefined;
 
   return (
     <div className={styles.search}>
       <form
+        action="/"
         className={styles.form}
+        method="get"
         onSubmit={submitEvent => {
           submitEvent.preventDefault();
-          openProjectSlug(query);
+          const trimmed = query.trim();
+          if (!trimmed) {
+            return;
+          }
+
+          syncHubSearchQuery(trimmed);
+          void requestOpenSlug(trimmed, setSubmitRejected, setResolveError, setIsResolving);
         }}
       >
         <label className={styles.visuallyHidden} for="slug">
@@ -34,8 +61,10 @@ export function HubSearch() {
           autoFocus
           className={styles.input}
           id="slug"
-          name="slug"
+          name={HUB_SEARCH_QUERY_PARAM}
           onInput={inputEvent => {
+            setSubmitRejected(false);
+            setResolveError(undefined);
             setQuery((inputEvent.currentTarget as HTMLInputElement).value);
           }}
           placeholder="project slug"
@@ -43,13 +72,39 @@ export function HubSearch() {
           type="search"
           value={query}
         />
-        <button className={styles.submitButton} disabled={!hasQuery} type="submit">
+        <button
+          aria-busy={isResolving}
+          className={styles.submitButton}
+          data-resolving={isResolving ? 'true' : undefined}
+          disabled={!hasQuery}
+          type="submit"
+        >
           Go
         </button>
       </form>
 
-      {showResults && (
-        <HubResults matches={matches} showEmptyState={showEmptyState} trimmedQuery={trimmedQuery} />
+      {showPanel && (
+        <div className={styles.searchPanel}>
+          {showNoMatches && (
+            <p className={styles.noMatchesMessage} role="status">
+              No project matches &ldquo;{trimmedQuery}&rdquo;
+            </p>
+          )}
+          {resolveError && (
+            <p className={styles.resolveError} role="alert">
+              {resolveError}
+            </p>
+          )}
+          {matches.length > 0 && (
+            <HubResults
+              isResolving={isResolving}
+              matches={matches}
+              onOpenSlug={slug => {
+                void requestOpenSlug(slug, setSubmitRejected, setResolveError, setIsResolving);
+              }}
+            />
+          )}
+        </div>
       )}
     </div>
   );
@@ -60,54 +115,68 @@ export function HubSearch() {
  */
 
 type HubResultsProps = {
+  isResolving: boolean;
   matches: Project[];
-  showEmptyState: boolean;
-  trimmedQuery: string;
+  onOpenSlug: (slug: string) => void;
 };
 
-function HubResults({matches, showEmptyState, trimmedQuery}: HubResultsProps) {
+function HubResults({isResolving, matches, onOpenSlug}: HubResultsProps) {
   return (
-    <ul aria-label={showEmptyState ? 'No matching projects' : 'Matching projects'} className={styles.results}>
-      {showEmptyState ? (
-        <li className={styles.emptyMessage} role="presentation">
-          No project matches &ldquo;{trimmedQuery}&rdquo;
+    <ul aria-label="Matching projects" className={styles.results}>
+      {matches.map(project => (
+        <li key={project.slug}>
+          <a
+            className={styles.resultLink}
+            href={`/${encodeURIComponent(project.slug)}`}
+            onClick={clickEvent => {
+              clickEvent.preventDefault();
+              if (isResolving) {
+                return;
+              }
+
+              onOpenSlug(project.slug);
+            }}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span className={styles.resultName}>{project.name}</span>
+            <span className={styles.resultSlug}>/{project.slug}</span>
+            <span className={styles.visuallyHidden}> (opens in new tab)</span>
+          </a>
         </li>
-      ) : (
-        matches.map(project => (
-          <li key={project.slug}>
-            <a
-              className={styles.resultLink}
-              href={`/${encodeURIComponent(project.slug)}`}
-              onClick={clickEvent => {
-                clickEvent.preventDefault();
-                openProjectSlug(project.slug);
-              }}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <span className={styles.resultName}>{project.name}</span>
-              <span className={styles.resultSlug}>/{project.slug}</span>
-              <span className={styles.visuallyHidden}> (opens in new tab)</span>
-            </a>
-          </li>
-        ))
-      )}
+      ))}
     </ul>
   );
 }
 
-function openProjectSlug(slug: string) {
+async function requestOpenSlug(
+  slug: string,
+  setSubmitRejected: (submitRejected: boolean) => void,
+  setResolveError: (message: string | undefined) => void,
+  setIsResolving: (isResolving: boolean) => void
+) {
   const trimmed = slug.trim();
   if (!trimmed) {
     return;
   }
 
-  const normalized = trimmed.toLowerCase();
-  const project = projects.find(entry => entry.slug.toLowerCase() === normalized);
-  if (project) {
-    globalThis.open(project.githubUrl, '_blank', 'noopener,noreferrer');
-    return;
-  }
+  setIsResolving(true);
 
-  globalThis.open(`/${encodeURIComponent(trimmed)}`, '_blank', 'noopener,noreferrer');
+  try {
+    const result = await fetchHubResolve(trimmed);
+    if (!result.ok) {
+      setSubmitRejected(true);
+      setResolveError(undefined);
+      return;
+    }
+
+    setSubmitRejected(false);
+    setResolveError(undefined);
+
+    globalThis.open(result.url, '_blank', 'noopener,noreferrer');
+  } catch {
+    setResolveError('Could not check that slug right now.');
+  } finally {
+    setIsResolving(false);
+  }
 }

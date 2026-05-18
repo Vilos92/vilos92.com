@@ -1,7 +1,13 @@
 import {describe, expect, test} from 'vite-plus/test';
 
+import {HUB_SEARCH_QUERY_PARAM} from '@/lib/hub-search';
 import type {Project} from '@/lib/projects';
-import {resolveSlugPath, resolveSlugPathWithProjects} from '@/routing';
+import {
+  resolveSlugOpen,
+  resolveSlugOpenWithProjects,
+  resolveSlugPath,
+  resolveSlugPathWithProjects
+} from '@/routing';
 
 /*
  * Constants.
@@ -41,8 +47,11 @@ describe('resolveSlugPath', () => {
     });
   });
 
-  test('returns not_found for unknown slug', () => {
-    expect(resolveSlugPath('/zzzznotarepo')).toEqual({kind: 'not_found', slug: 'zzzznotarepo'});
+  test('redirects unknown slug to hub search', () => {
+    expect(resolveSlugPath('/zzzznotarepo')).toEqual({
+      kind: 'redirect',
+      location: `/?${HUB_SEARCH_QUERY_PARAM}=zzzznotarepo`
+    });
   });
 
   test('trailing slash on slug still resolves', () => {
@@ -75,10 +84,58 @@ describe('resolveSlugPathWithProjects (public vs private fixture)', () => {
     });
   });
 
-  test('typo near private slug does not redirect', () => {
+  test('typo near private slug redirects to hub search', () => {
     expect(resolveSlugPathWithProjects(FIXTURE_PROJECTS, '/cynht')).toEqual({
-      kind: 'not_found',
-      slug: 'cynht'
+      kind: 'redirect',
+      location: `/?${HUB_SEARCH_QUERY_PARAM}=cynht`
+    });
+  });
+});
+
+describe('resolveSlugOpen', () => {
+  test('opens exact public slug', () => {
+    expect(resolveSlugOpen('dotfiles')).toEqual({
+      kind: 'open',
+      slug: 'dotfiles',
+      name: 'dotfiles',
+      url: 'https://github.com/Vilos92/dotfiles'
+    });
+  });
+
+  test('opens exact private slug case-insensitively', () => {
+    expect(resolveSlugOpen('VILOS92.com')).toEqual({
+      kind: 'open',
+      slug: 'vilos92.com',
+      name: 'vilos92.com',
+      url: 'https://github.com/Vilos92/vilos92.com'
+    });
+  });
+
+  test('rejects unknown slug', () => {
+    expect(resolveSlugOpen('zzzznotarepo')).toEqual({kind: 'reject'});
+  });
+
+  test('does not fuzzy-open private repo from short prefix', () => {
+    expect(resolveSlugOpen('vil')).toEqual({kind: 'reject'});
+  });
+});
+
+describe('resolveSlugOpenWithProjects', () => {
+  test('fuzzy-opens public typo', () => {
+    expect(resolveSlugOpenWithProjects(FIXTURE_PROJECTS, 'dotfile')).toEqual({
+      kind: 'open',
+      slug: 'dotfiles',
+      name: 'dotfiles',
+      url: 'https://github.com/Vilos92/dotfiles'
+    });
+  });
+
+  test('opens private slug when only dots differ', () => {
+    expect(resolveSlugOpen('vilos92com')).toEqual({
+      kind: 'open',
+      slug: 'vilos92.com',
+      name: 'vilos92.com',
+      url: 'https://github.com/Vilos92/vilos92.com'
     });
   });
 });

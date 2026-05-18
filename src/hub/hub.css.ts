@@ -143,6 +143,11 @@ export const submitButton = style({
     '&:disabled': {
       cursor: 'not-allowed',
       opacity: 0.4
+    },
+    '&[data-resolving="true"]': {
+      cursor: 'wait',
+      opacity: 0.72,
+      pointerEvents: 'none'
     }
   },
   '@media': {
@@ -152,16 +157,13 @@ export const submitButton = style({
   }
 });
 
-export const results = style({
+export const searchPanel = style({
   position: 'absolute',
   top: 'calc(100% + 0.5rem)',
   right: 0,
   left: 0,
   zIndex: 10,
-  margin: 0,
-  padding: 0,
   maxHeight: 'min(18rem, 40dvh)',
-  listStyle: 'none',
   overflowX: 'hidden',
   overflowY: 'auto',
   border: `1px solid ${palette.border}`,
@@ -178,6 +180,12 @@ export const results = style({
       boxShadow: 'none'
     }
   }
+});
+
+export const results = style({
+  margin: 0,
+  padding: 0,
+  listStyle: 'none'
 });
 
 export const resultLink = style({
@@ -212,8 +220,27 @@ export const resultSlug = style({
   color: palette.textMuted
 });
 
-export const emptyMessage = style({
+const panelMessage = {
+  margin: 0,
   padding: '0.75rem',
   fontSize: '0.875rem',
   color: palette.textSubtle
+};
+
+export const noMatchesMessage = style({
+  ...panelMessage,
+  selectors: {
+    [`${searchPanel} &:not(:last-child)`]: {
+      borderBottom: `1px solid ${palette.border}`
+    }
+  }
+});
+
+export const resolveError = style({
+  ...panelMessage,
+  selectors: {
+    [`${searchPanel} &:not(:last-child)`]: {
+      borderBottom: `1px solid ${palette.border}`
+    }
+  }
 });

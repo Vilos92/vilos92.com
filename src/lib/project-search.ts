@@ -18,24 +18,28 @@ const HUB_PREVIEW_LIMIT = 8;
  * Helpers.
  */
 
+/** `fuzzysort` projects with scores; empty `query` returns `[]`. */
+export function searchProjectsScored(projects: readonly Project[], query: string, limit = HUB_PREVIEW_LIMIT) {
+  const trimmed = query.trim();
+  if (!trimmed) {
+    return [];
+  }
+
+  return fuzzysort.go(trimmed, projects as Project[], {
+    key: 'slug',
+    threshold: FUZZY_MIN_SCORE,
+    limit
+  });
+}
+
 /** `fuzzysort` public projects with scores; empty `query` returns `[]`. */
 export function searchPublicProjectsScored(
   projects: readonly Project[],
   query: string,
   limit = HUB_PREVIEW_LIMIT
 ) {
-  const trimmed = query.trim();
-  if (!trimmed) {
-    return [];
-  }
-
   const publicProjects = projects.filter(project => !project.private);
-
-  return fuzzysort.go(trimmed, publicProjects as Project[], {
-    key: 'slug',
-    threshold: FUZZY_MIN_SCORE,
-    limit
-  });
+  return searchProjectsScored(publicProjects, query, limit);
 }
 
 /** `fuzzysort` public `Project`s for hub preview. */
