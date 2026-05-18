@@ -5,7 +5,7 @@ import type {Project} from './projects.ts';
  * API.
  */
 
-/** Fuzzy-match a slug against public projects only; requires a clear best fuzzysort result. */
+/** Fuzzy-match a slug against public `Project`s only; requires a clear best `fuzzysort` result. */
 export function findFuzzyPublicProject(input: string, projects: readonly Project[]): Project | undefined {
   const results = searchPublicProjectsScored(input, projects, 2);
   const best = results[0];
@@ -14,7 +14,7 @@ export function findFuzzyPublicProject(input: string, projects: readonly Project
   }
 
   const runnerUp = results[1];
-  // Ambiguous: runner-up also clears the score bar and is within FUZZY_SCORE_GAP of the winner — skip auto-redirect.
+  // Ambiguous: runner-up also clears `FUZZY_MIN_SCORE` and is within `FUZZY_SCORE_GAP` of the winner — skip auto-redirect.
   if (runnerUp && runnerUp.score >= FUZZY_MIN_SCORE && best.score - runnerUp.score < FUZZY_SCORE_GAP) {
     return undefined;
   }

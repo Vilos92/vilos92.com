@@ -6,10 +6,10 @@ import type {Project} from './lib/projects.ts';
  * Constants.
  */
 
-/** Minimum fuzzysort score (0–1) for a match. */
+/** Minimum `fuzzysort` score (0–1) for a match; see `FUZZY_MIN_SCORE`. */
 export const FUZZY_MIN_SCORE = 0.5;
 
-/** Top two slug matches must differ by at least this much or routing treats the match as ambiguous. */
+/** Top-two slug matches must differ by at least `FUZZY_SCORE_GAP` or `routing` treats the match as ambiguous. */
 export const FUZZY_SCORE_GAP = 0.15;
 
 const HUB_PREVIEW_LIMIT = 8;
@@ -18,7 +18,7 @@ const HUB_PREVIEW_LIMIT = 8;
  * API.
  */
 
-/** Fuzzysort public projects with scores (empty query returns []). */
+/** `fuzzysort` public projects with scores; empty `query` returns `[]`. */
 export function searchPublicProjectsScored(
   query: string,
   projects: readonly Project[],
@@ -38,7 +38,7 @@ export function searchPublicProjectsScored(
   });
 }
 
-/** Fuzzysort public projects for hub preview. */
+/** `fuzzysort` public `Project`s for hub preview. */
 export function searchPublicProjects(
   query: string,
   projects: readonly Project[],

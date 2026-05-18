@@ -24,6 +24,8 @@ Use `/* Section name. */` blocks. Read top-down: main entry first, **Helpers.** 
 
 Blank line before and after each section block, and between the comment and the code below it.
 
+**Comments:** in `//` / `/** */` prose, backtick code identifiers (functions, variables, constants, types, routes, paths, status codes) — e.g. `` `404` ``, `` `FUZZY_SCORE_GAP` ``; not section headers (`/* API. */`).
+
 ## Project hub (`src/projects.json`)
 
 Hub data in `src/projects.json` (`src/lib/projects.ts`). To refresh the list from GitHub, follow `.cursor/skills/sync-projects-json/SKILL.md` (GitHub MCP → update JSON → `vp check` / `vp test`).

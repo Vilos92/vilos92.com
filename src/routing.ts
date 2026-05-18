@@ -12,7 +12,7 @@ type RedirectResult = {kind: 'redirect'; location: string} | {kind: 'not_found';
  * API.
  */
 
-/** Resolve /:slug (not /) to a redirect target or 404. */
+/** Resolve `/:slug` (not `/`) to a redirect target or `404`. */
 export function resolveSlugPathWithProjects(
   pathname: string,
   projectList: readonly Project[]
@@ -43,7 +43,7 @@ export function resolveSlugPathWithProjects(
   return {kind: 'not_found', slug};
 }
 
-/** Resolve a slug path to a redirect target or 404. */
+/** Resolve a slug path to a redirect target or `404`. */
 export function resolveSlugPath(pathname: string): RedirectResult {
   return resolveSlugPathWithProjects(pathname, projects);
 }
