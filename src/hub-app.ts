@@ -1,4 +1,5 @@
 import '@/hub.css';
+import {GITHUB_PROFILE_URL} from '@/lib/github';
 import {searchPublicProjects} from '@/lib/project-search';
 import {publicProjects} from '@/lib/projects';
 
@@ -9,10 +10,13 @@ import {publicProjects} from '@/lib/projects';
 const form = requireElement<HTMLFormElement>('#go');
 const input = requireElement<HTMLInputElement>('#slug');
 const resultsEl = requireElement<HTMLUListElement>('#results');
+const siteTitle = requireElement<HTMLAnchorElement>('.site-title');
 
 /*
  * Script.
  */
+
+siteTitle.href = GITHUB_PROFILE_URL;
 
 input.addEventListener('input', () => {
   renderResults(input.value);

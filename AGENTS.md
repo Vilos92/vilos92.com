@@ -9,7 +9,7 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 ## Review Checklist
 
 - [ ] Run `vp install` after pulling remote changes and before getting started.
-- [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
+- [ ] Before commit (and after large / high-impact edits), run the **Validation** loop; fix failures before continuing.
 - [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
 <!--VITE PLUS END-->
@@ -29,7 +29,7 @@ Living conventions for this repo. Order and wording can evolve—ask whether new
 - Prefer **`undefined` over `null`**. Model absence as `undefined`; use **`.optional()`** in Zod, not **`.nullable().optional()`**. Do not use `?? null` in app code unless a type contract explicitly requires `null` (rare).
 - **`??` vs `||`:** use **`??`** to default `null`/`undefined` only. Reserve **`||`** for boolean conditions and deliberate truthiness (e.g. empty path → `'/'` after trim). Treating `''` as absent belongs in a named helper, not `value || fallback`.
 - **Avoid redundant nullish coalescing:** do not write `x ?? undefined` when `x` is already `T | undefined` with no `null`.
-- **Exports:** do not export types, functions, or constants unless another file imports them (or we deliberately expose a stable public API, e.g. `GITHUB_PROFILE_URL` in `lib/github.ts`).
+- **Exports:** do not export types, functions, or constants unless another file imports them (or we deliberately expose a stable public API that is actually wired in).
 - **`?` vs `| undefined`:** use optional properties (`prop?:`) only when callers often omit the key; for internal modules prefer required keys with `T | undefined` when a value may be absent.
 
 ## Imports
@@ -80,13 +80,32 @@ Blank line before and after each section block, and between the comment and the 
 - Prefer **loud, immediate failure** over a misleading partial state. Validate required DOM, config, and env **as early as we can**, and **throw** with a clear message when something required is missing.
 - Avoid **plausible-looking placeholders** for values the app cannot function without.
 
+## Validation
+
+**When:** after a **large diff** or **high-impact** touch (routing, hub/`projects.json`, shared `lib/`, worker, config) and **always before commit** (e.g. when closing a milestone task).
+
+**Loop** (shortest → longest; stop on first failure):
+
+1. `vp check` — fmt, lint, typecheck
+2. `vp test`
+3. `bun run fallow:audit` — dead code, unused exports, baselines (CI: `fallow-rs/fallow@v2` `audit`)
+
+**Findings:** fix—wire code, add `.fallowrc.jsonc` `entry` (`src/worker.ts`, `src/hub-app.ts`), or delete. Do not suppress to greenwash.
+
+**Must ignore?** Ask the human first; aim for a healthy codebase, not a quiet audit.
+
+- **Temporary** (follow-up PR): `TODO` + reason; smallest suppression only if needed.
+- **Permanent** (e.g. generated export): comment at the ignore explaining why.
+
+No fallow/lint waivers or “reserved for later” files without human approval and that documentation.
+
 ## Project hub (`src/projects.json`)
 
-Hub data in `src/projects.json` (`src/lib/projects.ts`). To refresh from GitHub, follow `.cursor/skills/sync-projects-json/SKILL.md` (GitHub MCP → update JSON → `vp check` / `vp test`).
+Hub data in `src/projects.json` (`src/lib/projects.ts`). To refresh from GitHub, follow `.cursor/skills/sync-projects-json/SKILL.md` (GitHub MCP → update JSON → **Validation** loop).
 
 ## CI
 
-- **Fallow:** run `bun run fallow:audit` (lockfile-pinned CLI). Do not use `fallow-rs/fallow@v2` or Actions cache for `.fallow/`.
+CI splits `fmt:check`, `lint`, `typecheck`, `test`, and **fallow** `audit`; locally use the **Validation** loop before push.
 
 ## Keeping this file useful
 
