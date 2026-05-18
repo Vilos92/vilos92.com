@@ -1,7 +1,7 @@
 import {useMemo, useState} from 'preact/hooks';
 
 import {searchPublicProjects} from '@/lib/project-search';
-import {publicProjects, type Project} from '@/lib/projects';
+import {projects, publicProjects, type Project} from '@/lib/projects';
 
 import * as styles from '@/hub/hub.css';
 
@@ -99,6 +99,13 @@ function HubResults({matches, showEmptyState, trimmedQuery}: HubResultsProps) {
 function openProjectSlug(slug: string) {
   const trimmed = slug.trim();
   if (!trimmed) {
+    return;
+  }
+
+  const normalized = trimmed.toLowerCase();
+  const project = projects.find(entry => entry.slug.toLowerCase() === normalized);
+  if (project) {
+    globalThis.open(project.githubUrl, '_blank', 'noopener,noreferrer');
     return;
   }
 

@@ -29,7 +29,7 @@ export function resolveSlugPathWithProjects(
   }
 
   const normalized = slug.toLowerCase();
-  const bySlug = new Map(projectList.map(project => [project.slug, project]));
+  const bySlug = new Map(projectList.map(project => [project.slug.toLowerCase(), project]));
   const exact = bySlug.get(normalized);
   if (exact) {
     return {kind: 'redirect', location: exact.githubUrl};
