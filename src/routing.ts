@@ -1,6 +1,6 @@
-import {projects} from './lib/projects';
-import type {Project} from './lib/projects';
-import {fuzzyFindPublicProject} from './lib/slug-fuzzy';
+import {projects} from '@/lib/projects';
+import type {Project} from '@/lib/projects';
+import {fuzzyFindPublicProject} from '@/lib/slug-fuzzy';
 
 /*
  * Types.

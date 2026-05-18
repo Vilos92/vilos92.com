@@ -1,6 +1,6 @@
 import {Hono} from 'hono';
 
-import {resolveSlugPath} from './routing';
+import {resolveSlugPath} from '@/routing';
 
 /*
  * API.

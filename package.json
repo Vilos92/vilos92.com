@@ -29,6 +29,7 @@
     "typescript": "~6.0.2",
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
     "vite-plus": "latest",
+    "vite-tsconfig-paths": "^6.1.1",
     "wrangler": "^4.87.0"
   },
   "overrides": {

@@ -1,6 +1,6 @@
 import fuzzysort from 'fuzzysort';
 
-import type {Project} from './projects';
+import type {Project} from '@/lib/projects';
 
 /*
  * Constants.

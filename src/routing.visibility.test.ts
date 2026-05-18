@@ -1,8 +1,8 @@
 import {describe, expect, test} from 'vite-plus/test';
 
-import type {Project} from './lib/projects';
-import {fuzzyFindPublicProject} from './lib/slug-fuzzy';
-import {resolveSlugPathWithProjects} from './routing';
+import type {Project} from '@/lib/projects';
+import {fuzzyFindPublicProject} from '@/lib/slug-fuzzy';
+import {resolveSlugPathWithProjects} from '@/routing';
 
 /*
  * Constants.

@@ -1,6 +1,6 @@
-import './hub.css';
-import {searchPublicProjects} from './lib/project-search';
-import {publicProjects} from './lib/projects';
+import '@/hub.css';
+import {searchPublicProjects} from '@/lib/project-search';
+import {publicProjects} from '@/lib/projects';
 
 /*
  * Constants.

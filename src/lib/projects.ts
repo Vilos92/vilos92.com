@@ -1,6 +1,6 @@
 import {z} from 'zod';
 
-import projectsJson from '../projects.json';
+import projectsJson from '@/projects.json';
 
 /*
  * Schemas.

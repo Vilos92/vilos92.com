@@ -1,5 +1,5 @@
-import {FUZZY_MIN_SCORE, FUZZY_SCORE_GAP, searchPublicProjectsScored} from './project-search';
-import type {Project} from './projects';
+import {FUZZY_MIN_SCORE, FUZZY_SCORE_GAP, searchPublicProjectsScored} from '@/lib/project-search';
+import type {Project} from '@/lib/projects';
 
 /*
  * Helpers.
