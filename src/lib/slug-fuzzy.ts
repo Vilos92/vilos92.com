@@ -26,7 +26,7 @@ function fuzzyFindProjectFromScored(results: ReturnType<typeof searchProjectsSco
 }
 
 /** Dot-insensitive slug key for private repo matching (not fuzzy prefix). */
-export function privateSlugMatchKey(slug: string): string {
+function privateSlugMatchKey(slug: string): string {
   return slug.toLowerCase().replaceAll('.', '');
 }
 

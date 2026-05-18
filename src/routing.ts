@@ -15,6 +15,12 @@ type SlugOpenResult = {kind: 'open'; slug: string; name: string; url: string} | 
  * Helpers.
  */
 
+function exactProjectBySlug(projectList: readonly Project[], slug: string): Project | undefined {
+  const normalized = slug.toLowerCase();
+  const bySlug = new Map(projectList.map(project => [project.slug.toLowerCase(), project]));
+  return bySlug.get(normalized);
+}
+
 /** Resolve `/:slug` (not `/`) to a redirect target or hub search fallback. */
 export function resolveSlugPathWithProjects(
   projectList: readonly Project[],
@@ -31,12 +37,12 @@ export function resolveSlugPathWithProjects(
     return {kind: 'not_found', slug: slug || '(empty)'};
   }
 
-  const normalized = slug.toLowerCase();
-  const bySlug = new Map(projectList.map(project => [project.slug.toLowerCase(), project]));
-  const exact = bySlug.get(normalized);
+  const exact = exactProjectBySlug(projectList, slug);
   if (exact) {
     return {kind: 'redirect', location: exact.githubUrl};
   }
+
+  const normalized = slug.toLowerCase();
 
   const fuzzy = fuzzyFindPublicProject(projectList, normalized);
   if (fuzzy) {
@@ -58,9 +64,7 @@ export function resolveSlugOpenWithProjects(projectList: readonly Project[], que
     return {kind: 'reject'};
   }
 
-  const normalized = trimmed.toLowerCase();
-  const bySlug = new Map(projectList.map(project => [project.slug.toLowerCase(), project]));
-  const exact = bySlug.get(normalized);
+  const exact = exactProjectBySlug(projectList, trimmed);
   if (exact) {
     return {kind: 'open', slug: exact.slug, name: exact.name, url: exact.githubUrl};
   }
@@ -75,7 +79,7 @@ export function resolveSlugOpenWithProjects(projectList: readonly Project[], que
     };
   }
 
-  const fuzzy = fuzzyFindPublicProject(projectList, normalized);
+  const fuzzy = fuzzyFindPublicProject(projectList, trimmed.toLowerCase());
   if (fuzzy) {
     return {kind: 'open', slug: fuzzy.slug, name: fuzzy.name, url: fuzzy.githubUrl};
   }
