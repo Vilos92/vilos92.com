@@ -67,18 +67,14 @@ type HubResultsProps = {
 
 function HubResults({matches, showEmptyState, trimmedQuery}: HubResultsProps) {
   return (
-    <ul
-      aria-label={showEmptyState ? 'No matching projects' : 'Matching projects'}
-      className={styles.results}
-      role="listbox"
-    >
+    <ul aria-label={showEmptyState ? 'No matching projects' : 'Matching projects'} className={styles.results}>
       {showEmptyState ? (
         <li className={styles.emptyMessage} role="presentation">
           No public project matches &ldquo;{trimmedQuery}&rdquo;
         </li>
       ) : (
         matches.map(project => (
-          <li key={project.slug} role="option">
+          <li key={project.slug}>
             <a
               className={styles.resultLink}
               href={`/${encodeURIComponent(project.slug)}`}
