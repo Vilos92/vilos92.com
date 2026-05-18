@@ -1,5 +1,5 @@
+import {FUZZY_MIN_SCORE, FUZZY_SCORE_GAP, searchPublicProjectsScored} from '../search-public.ts';
 import type {Project} from './projects.ts';
-import {FUZZY_MIN_SCORE, FUZZY_SCORE_GAP, searchPublicProjectsScored} from './search-public.ts';
 
 /*
  * API.
@@ -14,6 +14,7 @@ export function findFuzzyPublicProject(input: string, projects: readonly Project
   }
 
   const runnerUp = results[1];
+  // Ambiguous: runner-up also clears the score bar and is within FUZZY_SCORE_GAP of the winner — skip auto-redirect.
   if (runnerUp && runnerUp.score >= FUZZY_MIN_SCORE && best.score - runnerUp.score < FUZZY_SCORE_GAP) {
     return undefined;
   }

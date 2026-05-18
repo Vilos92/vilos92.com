@@ -1,8 +1,8 @@
 import {describe, expect, test} from 'vite-plus/test';
 
-import {projects} from './projects.ts';
+import {projects} from './lib/projects.ts';
+import {findFuzzyPublicProject} from './lib/slug-fuzzy.ts';
 import {resolveSlugPath} from './routing.ts';
-import {findFuzzyPublicProject} from './slug-fuzzy.ts';
 
 describe('findFuzzyPublicProject', () => {
   test('matches close public slug', () => {

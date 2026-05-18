@@ -1,6 +1,6 @@
 import fuzzysort from 'fuzzysort';
 
-import type {Project} from './projects.ts';
+import type {Project} from './lib/projects.ts';
 
 /*
  * Constants.
@@ -12,7 +12,7 @@ export const FUZZY_MIN_SCORE = 0.5;
 /** Top two slug matches must differ by at least this much or routing treats the match as ambiguous. */
 export const FUZZY_SCORE_GAP = 0.15;
 
-export const HUB_PREVIEW_LIMIT = 8;
+const HUB_PREVIEW_LIMIT = 8;
 
 /*
  * API.

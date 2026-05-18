@@ -30,8 +30,17 @@ Use `/* Section name. */` blocks. Read top-down: main entry first, **Helpers.** 
 
 Blank line before and after each section block, and between the comment and the code below it.
 
+## TypeScript
+
+- Prefer **`type` over `interface`** unless you truly need declaration merging (we do not).
+- Prefer **`undefined` over `null`**. Model absence as `undefined` in app and AI shapes; use **`.optional()`** in Zod, not **`.nullable().optional()`**. Use **`toSqlNull()`** (`#/lib/nullish`) only at Drizzle write boundaries where the column must be SQL `NULL`. Do not use `?? null` in app code unless a type contract explicitly requires `null` (rare). Do not add helpers to map `null` → `undefined`; type app surfaces without `null` so conversion stays rare.
+- **`??` vs `||`:** use **`??`** to default `null`/`undefined` only. Reserve **`||`** for boolean conditions and deliberate truthiness (e.g. `disabled={isSaving || isDeleting}`). Treating `''` as absent belongs in **`trimmedOrUndefined()`**, not `value || fallback`.
+- **Avoid redundant nullish coalescing:** do not write `x ?? undefined` when `x` is already `T | undefined` with no `null`.
+- **Exports:** do not export types, functions, or constants unless another file imports them (or we deliberately expose a stable public API). Prefer module-private symbols until then.
+- **`?` vs `| undefined`:** use optional properties (`prop?:`) only when callers often omit the key entirely (e.g. wide public or library-style surfaces). For **internal** components and modules, prefer required keys with `T | undefined` when a value may be absent—every call site passes the prop explicitly, and “missing meaning” is modeled as `undefined`, not “key not passed.”
+
 ## Project hub (`src/projects.json`)
 
-Hub data in `src/projects.json` (`src/projects.ts`). To refresh the list from GitHub, follow `.cursor/skills/sync-projects-json/SKILL.md` (GitHub MCP → update JSON → `vp check` / `vp test`).
+Hub data in `src/projects.json` (`src/lib/projects.ts`). To refresh the list from GitHub, follow `.cursor/skills/sync-projects-json/SKILL.md` (GitHub MCP → update JSON → `vp check` / `vp test`).
 
 <!--VITE PLUS END-->

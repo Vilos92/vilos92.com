@@ -1,5 +1,5 @@
 import './hub.css';
-import {publicProjects} from './projects.ts';
+import {publicProjects} from './lib/projects.ts';
 import {searchPublicProjects} from './search-public.ts';
 
 /*

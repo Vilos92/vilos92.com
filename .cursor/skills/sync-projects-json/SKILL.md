@@ -56,7 +56,7 @@ Sort the array by `slug` ascending (`localeCompare`).
    unchanged** and report: `projects.json already in sync (N projects)`.
 4. Otherwise **write** the full file (do not patch individual entries).
 
-Shape (matches `src/projects.ts` `Project` type):
+Shape (matches `src/lib/projects.ts` `Project` type):
 
 ```json
 [
@@ -122,4 +122,4 @@ If anything fails, do not complete the task—report what failed (MCP auth, JSON
 ## Related files
 
 - `src/projects.json` — hub data (generated / synced by agents)
-- `src/projects.ts` — `Project` type and exports (`projects`, `projectsBySlug`, …)
+- `src/lib/projects.ts` — `Project` type and exports (`projects`, `publicProjects`, …)
