@@ -88,7 +88,7 @@ Blank line before and after each section block, and between the comment and the 
 
 1. `vp check` — fmt, lint, typecheck
 2. `vp test`
-3. `bun run fallow:audit` — dead code, unused exports, baselines (CI: `fallow-rs/fallow@v2` `audit`)
+3. `bun run fallow:audit` — dead code, unused exports, baselines (CI passes `--base`; see workflow)
 
 **Findings:** fix—wire code, add `.fallowrc.jsonc` `entry` (`src/worker.ts`, `src/hub-app.ts`), or delete. Do not suppress to greenwash.
 
@@ -105,7 +105,7 @@ Hub data in `src/projects.json` (`src/lib/projects.ts`). To refresh from GitHub,
 
 ## CI
 
-CI splits `fmt:check`, `lint`, `typecheck`, `test`, and **fallow** `audit`; locally use the **Validation** loop before push.
+CI splits `fmt:check`, `lint`, `typecheck`, `test`, and **fallow** (`bun run fallow:audit -- --base …`); locally use the **Validation** loop before push. Do not use `fallow-rs/fallow@v2` in workflows.
 
 ## Keeping this file useful
 
