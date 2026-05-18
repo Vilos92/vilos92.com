@@ -1,20 +1,30 @@
 import {describe, expect, test} from 'vite-plus/test';
 
-import {projects} from '@/lib/projects';
-import {fuzzyFindPublicProject} from '@/lib/slug-fuzzy';
-import {resolveSlugPath} from '@/routing';
+import type {Project} from '@/lib/projects';
+import {resolveSlugPath, resolveSlugPathWithProjects} from '@/routing';
 
-describe('findFuzzyPublicProject', () => {
-  test('matches close public slug', () => {
-    const match = fuzzyFindPublicProject(projects, 'dotfile');
-    expect(match?.slug).toBe('dotfiles');
-    expect(match?.private).toBe(false);
-  });
+/*
+ * Constants.
+ */
 
-  test('rejects ambiguous fuzzy matches', () => {
-    expect(fuzzyFindPublicProject(projects, 'ck')).toBeUndefined();
-  });
-});
+const FIXTURE_PROJECTS: Project[] = [
+  {
+    slug: 'dotfiles',
+    name: 'dotfiles',
+    githubUrl: 'https://github.com/Vilos92/dotfiles',
+    private: false
+  },
+  {
+    slug: 'cynth',
+    name: 'cynth',
+    githubUrl: 'https://github.com/Vilos92/cynth',
+    private: true
+  }
+];
+
+/*
+ * Tests.
+ */
 
 describe('resolveSlugPath', () => {
   test('redirects exact slug to repo', () => {
@@ -39,6 +49,36 @@ describe('resolveSlugPath', () => {
     expect(resolveSlugPath('/dotfiles/')).toEqual({
       kind: 'redirect',
       location: 'https://github.com/Vilos92/dotfiles'
+    });
+  });
+});
+
+describe('resolveSlugPathWithProjects (public vs private fixture)', () => {
+  test('exact public slug redirects', () => {
+    expect(resolveSlugPathWithProjects(FIXTURE_PROJECTS, '/dotfiles')).toEqual({
+      kind: 'redirect',
+      location: 'https://github.com/Vilos92/dotfiles'
+    });
+  });
+
+  test('fuzzy typo resolves for public slug', () => {
+    expect(resolveSlugPathWithProjects(FIXTURE_PROJECTS, '/dotfile')).toEqual({
+      kind: 'redirect',
+      location: 'https://github.com/Vilos92/dotfiles'
+    });
+  });
+
+  test('exact private slug redirects', () => {
+    expect(resolveSlugPathWithProjects(FIXTURE_PROJECTS, '/cynth')).toEqual({
+      kind: 'redirect',
+      location: 'https://github.com/Vilos92/cynth'
+    });
+  });
+
+  test('typo near private slug does not redirect', () => {
+    expect(resolveSlugPathWithProjects(FIXTURE_PROJECTS, '/cynht')).toEqual({
+      kind: 'not_found',
+      slug: 'cynht'
     });
   });
 });

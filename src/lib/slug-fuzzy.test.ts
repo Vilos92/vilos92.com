@@ -1,0 +1,46 @@
+import {describe, expect, test} from 'vite-plus/test';
+
+import type {Project} from '@/lib/projects';
+import {projects} from '@/lib/projects';
+import {fuzzyFindPublicProject} from '@/lib/slug-fuzzy';
+
+/*
+ * Constants.
+ */
+
+const FIXTURE_PROJECTS: Project[] = [
+  {
+    slug: 'dotfiles',
+    name: 'dotfiles',
+    githubUrl: 'https://github.com/Vilos92/dotfiles',
+    private: false
+  },
+  {
+    slug: 'cynth',
+    name: 'cynth',
+    githubUrl: 'https://github.com/Vilos92/cynth',
+    private: true
+  }
+];
+
+/*
+ * Tests.
+ */
+
+describe('fuzzyFindPublicProject', () => {
+  test('matches close public slug', () => {
+    const match = fuzzyFindPublicProject(projects, 'dotfile');
+    expect(match?.slug).toBe('dotfiles');
+    expect(match?.private).toBe(false);
+  });
+
+  test('rejects ambiguous fuzzy matches', () => {
+    expect(fuzzyFindPublicProject(projects, 'ck')).toBeUndefined();
+  });
+
+  test('never returns private repos', () => {
+    expect(fuzzyFindPublicProject(FIXTURE_PROJECTS, 'cynht')).toBeUndefined();
+    expect(fuzzyFindPublicProject(FIXTURE_PROJECTS, 'cynth')).toBeUndefined();
+    expect(fuzzyFindPublicProject(FIXTURE_PROJECTS, 'dotfile')?.private).toBe(false);
+  });
+});

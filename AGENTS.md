@@ -53,7 +53,7 @@ Use `/* Section name. */` blocks. Read top-down: main entry first, **Helpers.** 
 
 **Lean files** (one export, few lines): a single **API.** or **Script.** block is enough.
 
-**Tests** (`*.test.ts`): shared fixtures in **Constants.**; `describe` / `test` are the entry (no **Tests.** wrapper unless the file is large).
+**Tests:** one `{module}.test.ts` per module under test (`routing.test.ts` → `routing.ts`, `lib/slug-fuzzy.test.ts` → `lib/slug-fuzzy.ts`). **Constants.** (fixtures) → **Tests.** (`describe` / `test`).
 
 Blank line before and after each section block, and between the comment and the code below it.
 
