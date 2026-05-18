@@ -2,7 +2,6 @@ import {cloudflare} from '@cloudflare/vite-plugin';
 import preact from '@preact/preset-vite';
 import {vanillaExtractPlugin} from '@vanilla-extract/vite-plugin';
 import {defineConfig} from 'vite-plus';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 /*
  * Constants.
@@ -26,8 +25,11 @@ const REPO_TS_FMT_OPTIONS = {
  */
 
 export default defineConfig({
+  resolve: {
+    tsconfigPaths: true
+  },
   plugins: isVitest
-    ? [tsconfigPaths()]
+    ? []
     : [
         cloudflare(),
         vanillaExtractPlugin(),
@@ -38,8 +40,7 @@ export default defineConfig({
             additionalPrerenderRoutes: ['/'],
             previewMiddlewareEnabled: true
           }
-        }),
-        tsconfigPaths()
+        })
       ],
   staged: {
     '*': 'vp check --fix'
