@@ -48,7 +48,7 @@ export function nextMatchIndex(
 
 /** Project to open on submit: active row, else first match, else `undefined`. */
 export function highlightedProject(matches: Project[], activeIndex: number | undefined): Project | undefined {
-  if (activeIndex !== undefined && activeIndex < matches.length) {
+  if (activeIndex !== undefined && activeIndex >= 0 && activeIndex < matches.length) {
     return matches[activeIndex];
   }
 

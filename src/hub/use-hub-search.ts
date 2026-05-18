@@ -9,6 +9,12 @@ import {searchPublicProjects} from '@/lib/project-search';
 import {publicProjects} from '@/lib/projects';
 
 /*
+ * Types.
+ */
+
+export type HubSearchViewModel = ReturnType<typeof useHubSearch>;
+
+/*
  * Constants.
  */
 
@@ -17,13 +23,7 @@ export const HUB_SEARCH_STATUS_ID = 'hub-search-status';
 export const HUB_SEARCH_RESULTS_REGION_ID = 'hub-search-results';
 
 /*
- * Types.
- */
-
-export type HubSearchViewModel = ReturnType<typeof useHubSearch>;
-
-/*
- * Helpers.
+ * Entry surface.
  */
 
 /** Hub search field state, keyboard navigation, and resolve/open handlers. */

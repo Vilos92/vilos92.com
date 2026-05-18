@@ -38,5 +38,6 @@ describe('highlightedProject', () => {
   test('prefers the active row, then the first match', () => {
     expect(highlightedProject(MATCHES, 1)?.slug).toBe('clock');
     expect(highlightedProject(MATCHES, undefined)?.slug).toBe('dotfiles');
+    expect(highlightedProject(MATCHES, -1)?.slug).toBe('dotfiles');
   });
 });

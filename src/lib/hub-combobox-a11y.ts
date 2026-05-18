@@ -7,7 +7,7 @@ import {HUB_PROJECT_LISTBOX_ID, hubProjectOptionId} from '@/lib/hub-search-list'
 type ComboboxA11yInput = {
   activeIndex: number | undefined;
   inputDescribedBy: string;
-  listboxOpen: boolean;
+  isListboxOpen: boolean;
 };
 
 /*
@@ -18,13 +18,13 @@ type ComboboxA11yInput = {
 export function hubComboboxInputA11y(input: ComboboxA11yInput) {
   return {
     'aria-activedescendant':
-      input.activeIndex !== undefined && input.listboxOpen
+      input.activeIndex !== undefined && input.isListboxOpen
         ? hubProjectOptionId(input.activeIndex)
         : undefined,
     'aria-autocomplete': 'list' as const,
-    'aria-controls': input.listboxOpen ? HUB_PROJECT_LISTBOX_ID : undefined,
+    'aria-controls': input.isListboxOpen ? HUB_PROJECT_LISTBOX_ID : undefined,
     'aria-describedby': input.inputDescribedBy,
-    'aria-expanded': input.listboxOpen,
+    'aria-expanded': input.isListboxOpen,
     'aria-haspopup': 'listbox' as const
   };
 }

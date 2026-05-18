@@ -18,7 +18,7 @@ export function HubSearchSlugInput({search}: HubSearchSlugInputProps) {
       {...hubComboboxInputA11y({
         activeIndex: search.activeIndex,
         inputDescribedBy: search.inputDescribedBy,
-        listboxOpen: search.listboxOpen
+        isListboxOpen: search.listboxOpen
       })}
       autoComplete="off"
       autoFocus
