@@ -106,7 +106,7 @@ No fallow/lint waivers or “reserved for later” files without human approval 
 
 ## Project hub (`src/projects.json`)
 
-Hub data in `src/projects.json` (`src/lib/projects.ts`). To refresh from GitHub, follow `.cursor/skills/sync-projects-json/SKILL.md` (GitHub MCP → update JSON → **Validation** loop).
+Hub data in `src/projects.json` (`src/lib/projects.ts`). To refresh from GitHub, follow `.cursor/skills/sync-projects-json/SKILL.md` (`bun run sync:projects` / gh CLI, GitHub MCP fallback → **Validation** loop).
 
 ## CI
 

@@ -15,7 +15,8 @@
     "test": "vp test",
     "check": "vp check",
     "fallow": "fallow --summary",
-    "fallow:audit": "fallow audit"
+    "fallow:audit": "fallow audit",
+    "sync:projects": "scripts/sync-projects-json.sh"
   },
   "dependencies": {
     "fuzzysort": "^3.1.0",
