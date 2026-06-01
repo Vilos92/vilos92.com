@@ -134,7 +134,7 @@
   {
     "githubUrl": "https://github.com/Vilos92/gdex",
     "name": "gdex",
-    "private": true,
+    "private": false,
     "slug": "gdex"
   },
   {
