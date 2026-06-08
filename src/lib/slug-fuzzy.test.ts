@@ -62,10 +62,10 @@ describe('fuzzyFindPublicProject', () => {
 
 describe('findPrivateProjectBySlugQuery', () => {
   test('matches when only dots differ', () => {
-    expect(findPrivateProjectBySlugQuery(projects, 'vilos92com')?.slug).toBe('vilos92.com');
+    expect(findPrivateProjectBySlugQuery(projects, 'grynthiacat')?.slug).toBe('grynthia.cat');
   });
 
   test('does not match fuzzy prefix', () => {
-    expect(findPrivateProjectBySlugQuery(projects, 'vil')).toBeUndefined();
+    expect(findPrivateProjectBySlugQuery(projects, 'gry')).toBeUndefined();
   });
 });

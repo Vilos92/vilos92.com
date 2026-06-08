@@ -108,7 +108,7 @@ describe('resolveSlugOpen', () => {
     });
   });
 
-  test('opens exact private slug case-insensitively', () => {
+  test('opens exact slug case-insensitively', () => {
     expect(resolveSlugOpen('VILOS92.com')).toEqual({
       kind: 'open',
       slug: 'vilos92.com',
@@ -117,12 +117,21 @@ describe('resolveSlugOpen', () => {
     });
   });
 
+  test('opens exact private slug case-insensitively', () => {
+    expect(resolveSlugOpen('GRYNTHIA.CAT')).toEqual({
+      kind: 'open',
+      slug: 'grynthia.cat',
+      name: 'grynthia.cat',
+      url: 'https://github.com/Vilos92/grynthia.cat'
+    });
+  });
+
   test('rejects unknown slug', () => {
     expect(resolveSlugOpen('zzzznotarepo')).toEqual({kind: 'reject'});
   });
 
   test('does not fuzzy-open private repo from short prefix', () => {
-    expect(resolveSlugOpen('vil')).toEqual({kind: 'reject'});
+    expect(resolveSlugOpenWithProjects(FIXTURE_PROJECTS, 'vil')).toEqual({kind: 'reject'});
   });
 });
 
