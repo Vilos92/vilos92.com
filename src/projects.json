@@ -150,10 +150,16 @@
     "slug": "greg_linscheid"
   },
   {
-    "githubUrl": "https://github.com/Vilos92/greglinscheid",
-    "name": "greglinscheid",
+    "githubUrl": "https://github.com/Vilos92/greglinscheid-old",
+    "name": "greglinscheid-old",
     "private": true,
-    "slug": "greglinscheid"
+    "slug": "greglinscheid-old"
+  },
+  {
+    "githubUrl": "https://github.com/Vilos92/greglinscheid.com",
+    "name": "greglinscheid.com",
+    "private": false,
+    "slug": "greglinscheid.com"
   },
   {
     "githubUrl": "https://github.com/Vilos92/grynthia.cat",
