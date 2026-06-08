@@ -1,6 +1,6 @@
 import {globalStyle} from '@vanilla-extract/css';
 
-import {touchLayout} from '@/hub/hub-media';
+import {media, touchTargetMin} from '@/hub/hub-media';
 import {fonts, palette} from '@/hub/tokens';
 
 /*
@@ -29,7 +29,7 @@ globalStyle('body', {
   WebkitFontSmoothing: 'antialiased',
   MozOsxFontSmoothing: 'grayscale',
   '@media': {
-    [touchLayout]: {
+    [media.narrow]: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'stretch',
@@ -44,8 +44,14 @@ globalStyle(':focus', {
 });
 
 globalStyle(':focus-visible', {
-  outline: `1px solid ${palette.accent}`,
-  outlineOffset: '2px'
+  outline: `2px solid ${palette.accent}`,
+  outlineOffset: '3px',
+  '@media': {
+    [media.highContrast]: {
+      outlineWidth: '3px',
+      outlineOffset: '4px'
+    }
+  }
 });
 
 globalStyle('.skip-link', {
@@ -54,13 +60,26 @@ globalStyle('.skip-link', {
   top: '-100%',
   zIndex: 100,
   padding: '0.5rem 0.75rem',
+  borderWidth: '2px',
+  borderStyle: 'solid',
+  borderColor: palette.accent,
   borderRadius: '0.375rem',
   background: palette.surface,
   color: palette.text,
   font: 'inherit',
   fontWeight: 600,
   textDecoration: 'none',
-  boxShadow: palette.shadow
+  boxShadow: palette.shadow,
+  '@media': {
+    [media.coarsePointer]: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      minHeight: touchTargetMin
+    },
+    [media.highContrast]: {
+      borderWidth: '3px'
+    }
+  }
 });
 
 globalStyle('.skip-link:focus-visible', {

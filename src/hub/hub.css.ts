@@ -1,6 +1,6 @@
 import {style} from '@vanilla-extract/css';
 
-import {touchLayout} from '@/hub/hub-media';
+import {media, touchTargetMin} from '@/hub/hub-media';
 import {palette} from '@/hub/tokens';
 
 /*
@@ -18,7 +18,7 @@ export const main = style({
   width: 'min(24rem, 92vw)',
   minWidth: 0,
   '@media': {
-    [touchLayout]: {
+    [media.narrow]: {
       flex: 1,
       alignItems: 'stretch',
       width: '100%',
@@ -31,7 +31,7 @@ export const header = style({
   marginBottom: '1.25rem',
   width: '100%',
   '@media': {
-    [touchLayout]: {
+    [media.narrow]: {
       flexShrink: 0,
       marginBottom: '0.875rem'
     }
@@ -45,7 +45,7 @@ export const title = style({
   letterSpacing: '-0.03em',
   textAlign: 'center',
   '@media': {
-    [touchLayout]: {
+    [media.narrow]: {
       textAlign: 'left'
     }
   }
@@ -55,12 +55,24 @@ export const siteTitle = style({
   color: 'inherit',
   textDecoration: 'none',
   borderRadius: '0.25rem',
+  '@media': {
+    [media.highContrast]: {
+      textDecoration: 'underline',
+      textUnderlineOffset: '0.15em',
+      textDecorationThickness: '2px',
+      fontWeight: 700
+    }
+  },
   selectors: {
     '&:hover': {
-      color: palette.accentHover
+      color: palette.accentHover,
+      textDecoration: 'underline',
+      textUnderlineOffset: '0.15em'
     },
     '&:focus-visible': {
-      outlineOffset: '2px'
+      outlineOffset: '2px',
+      textDecoration: 'underline',
+      textUnderlineOffset: '0.15em'
     }
   }
 });
@@ -70,7 +82,7 @@ export const search = style({
   width: '100%',
   minWidth: 0,
   '@media': {
-    [touchLayout]: {
+    [media.narrow]: {
       display: 'flex',
       flex: 1,
       flexDirection: 'column',
@@ -84,7 +96,7 @@ export const form = style({
   gap: '0.5rem',
   flexShrink: 0,
   '@media': {
-    [touchLayout]: {
+    [media.narrow]: {
       gap: '0.625rem'
     }
   }
@@ -141,9 +153,18 @@ export const input = style({
     }
   },
   '@media': {
-    [touchLayout]: {
-      minHeight: '2.75rem',
+    [media.coarsePointer]: {
+      minHeight: touchTargetMin,
       padding: '0.75rem'
+    },
+    [media.highContrast]: {
+      borderWidth: '2px',
+      selectors: {
+        '&:focus-visible': {
+          outline: `2px solid ${palette.accent}`,
+          outlineOffset: '2px'
+        }
+      }
     }
   }
 });
@@ -184,11 +205,11 @@ export const submitButton = style({
     }
   },
   '@media': {
-    '(prefers-reduced-motion: reduce)': {
+    [media.reducedMotion]: {
       transition: 'none'
     },
-    [touchLayout]: {
-      minHeight: '2.75rem',
+    [media.coarsePointer]: {
+      minHeight: touchTargetMin,
       padding: '0.75rem 1.25rem'
     }
   }
@@ -210,13 +231,16 @@ export const searchPanel = style({
   boxShadow: palette.shadow,
   WebkitOverflowScrolling: 'touch',
   '@media': {
-    [touchLayout]: {
+    [media.narrow]: {
       position: 'static',
       flex: 1,
       minHeight: 0,
       marginTop: '0.75rem',
       maxHeight: 'none',
       boxShadow: 'none'
+    },
+    [media.highContrast]: {
+      borderWidth: '2px'
     }
   }
 });
@@ -230,7 +254,6 @@ export const results = style({
 export const resultOption = style({
   display: 'block',
   width: '100%',
-  minHeight: '2.75rem',
   padding: '0.5rem 0.75rem',
   border: 0,
   borderRadius: '0.25rem',
@@ -250,7 +273,8 @@ export const resultOption = style({
     }
   },
   '@media': {
-    [touchLayout]: {
+    [media.coarsePointer]: {
+      minHeight: touchTargetMin,
       padding: '0.75rem 1rem'
     }
   }
