@@ -276,6 +276,12 @@
     "slug": "rusty-web-terminal"
   },
   {
+    "githubUrl": "https://github.com/Vilos92/scriptlancer",
+    "name": "scriptlancer",
+    "private": true,
+    "slug": "scriptlancer"
+  },
+  {
     "githubUrl": "https://github.com/Vilos92/shot_charts",
     "name": "shot_charts",
     "private": true,
