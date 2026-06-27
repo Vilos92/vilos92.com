@@ -16,7 +16,7 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 
 # Agent notes
 
-Living conventions for this repo. Order and wording can evolve—ask whether new habits belong here.
+Living conventions for this repo. Order and wording can evolve—ask whether new habits belong here vs `README.md`.
 
 ## Bun
 
@@ -29,13 +29,22 @@ Living conventions for this repo. Order and wording can evolve—ask whether new
 - Prefer **`undefined` over `null`**. Model absence as `undefined`; use **`.optional()`** in Zod, not **`.nullable().optional()`**. Do not use `?? null` in app code unless a type contract explicitly requires `null` (rare).
 - **`??` vs `||`:** use **`??`** to default `null`/`undefined` only. Reserve **`||`** for boolean conditions and deliberate truthiness (e.g. empty path → `'/'` after trim). Treating `''` as absent belongs in a named helper, not `value || fallback`.
 - **Avoid redundant nullish coalescing:** do not write `x ?? undefined` when `x` is already `T | undefined` with no `null`.
-- **Exports:** do not export types, functions, or constants unless another file imports them (or we deliberately expose a stable public API that is actually wired in).
+- **Exports:** module-private until another file imports (or we ship a stable public API). Fallow flags unused exports—wire, **`entry`**, or delete (see **Validation**).
 - **`?` vs `| undefined`:** use optional properties (`prop?:`) when callers often omit the key entirely (e.g. wide public surfaces). For **internal** modules, prefer required keys with `T | undefined` when a value may be absent—call sites pass the prop explicitly, and absence is `undefined`, not “key not passed.” **Exception:** props normally omitted when unused—especially **`className?`** and other familiar DOM-style optional props—stay `prop?: T`; do not write `prop={undefined}` at call sites.
+- **Readonly arrays** for read-only / pass-through data (`readonly T[]`).
 
 ## Imports
 
 - **`@/*` → `./src/*`** in `tsconfig` `paths`. Import every `src/` module via `@/` (`@/lib/projects`, `@/hub/HubApp`); no relative paths between `src/` files.
 - No **`.ts` / `.tsx`** suffixes on import paths (`allowImportingTsExtensions: false`).
+- Use **`import type`** for type-only imports (`verbatimModuleSyntax`).
+
+## Vanilla Extract
+
+- **`*.css.ts`** colocated with UI (`src/hub/hub.css.ts`); shared globals under **`src/hub/global.css.ts`**.
+- **`data-*` attribute variants over class composition.** Encode discrete state with `data-` attributes and match them in `selectors` (`'&[data-empty="true"]'`). Do not toggle separate BEM modifier classes.
+- **Runtime-varying values via `createVar` + `setElementVar`.** CSS variables that change at runtime flow through a `createVar()` in `.css.ts` and are updated by `setElementVar` from `@vanilla-extract/dynamic`. The static rule stays in `.css.ts`; only the value moves at runtime.
+- **Imperative `element.style` is the last resort.** Reach for it only when neither pattern above fits.
 
 ## File layout (section comments)
 
@@ -56,7 +65,7 @@ Use `/* Section name. */` blocks. Read top-down: main entry first, **Helpers.** 
 
 **Config** (`vite.config.ts`): **Constants.** → **Config.** (default export). Module-level `const` above the entry; only `function` helpers may follow (hoisting).
 
-**Lean files** (one export, few lines): one matching entry block (**API.**, **Script.**, **Component.**, **Config.**, etc.) is enough.
+**Lean files** (one export, few lines): one matching entry block (**API.**, **Script.**, **Component.**, **Config.**, etc.) is enough—skip extra section markers when they add ceremony only.
 
 **Tests:** one `{module}.test.ts` per module under test (`routing.test.ts` → `routing.ts`, `lib/slug-fuzzy.test.ts` → `lib/slug-fuzzy.ts`). **Constants.** (fixtures) → **Tests.** (`describe` / `test`).
 
@@ -67,18 +76,26 @@ Blank line before and after each section block, and between the comment and the 
 - Prefer a **functional** style: fewer reassignments unless performance or clarity really wins.
 - Avoid deep nesting. Prefer **small helpers** with **early returns**.
 - Prefer **array helpers** (`map`, `filter`, …) unless a hot path needs a hand-tuned loop. **Do not use `forEach`**—use **`for`…`of`** (or indexed `for`) for imperative iteration.
+- **`no-nested-ternary`** and **`curly: all`** are Oxlint errors (via `vp check`)—always brace blocks; no nested ternaries.
 
 ## Comments
 
 - Prefer **why** (intent, tradeoffs, invariants) over **what**; drop comments that only restate the code.
-- **JSDoc** on exports and non-trivial helpers when the contract is not obvious—often one crisp line is enough.
+- **State intent positively.** Explain what we do and why, not what we avoid or what could fail. Prefer `// ensures Y` over `// prevents X` when the code already makes X impossible.
+- **Layer once.** Put shared why on a constant, type field, or entry closure. Do not repeat the same rationale at every call site.
+- **JSDoc** on exports and non-trivial helpers when the contract is not obvious—often one crisp line is enough. Do not document module-private types (see **Exports**).
 - In `//` / `/** */` prose, **backtick code identifiers** (`404`, `FUZZY_SCORE_GAP`, `/:slug`); not section headers (`/* API. */`).
+- **Section blocks** (see **File layout**) label structure only — no extra explanation inside the marker.
+- **`@sideEffect` (house tag):** flag non-pure functions, even when prose is trimmed to the tag alone. Terse clause names the effect (e.g. "Mutates DOM.", "Async I/O.", "Registers listener."). On exports and closures, use a multi-line block: why line, then `@sideEffect`. Covers mutation, async I/O, non-determinism, and DOM/event registration. Not standard JSDoc/TSDoc. Pure functions get **no** tag.
 
 ## Naming
 
-- **Booleans:** prefix with **`is`**, **`has`**, **`should`**, etc. (`isVitest`, `hasRunnerUp`).
-- **Locals:** context-readable names (`projectList`, `runnerUp`, `normalizedSlug`)—not `e`, `res`, `n`, `c`, `x`.
+- **Booleans:** prefix with **`is`**, **`has`**, **`should`**, **`can`**, etc. (`isVitest`, `hasRunnerUp`)—not bare adjectives or state nouns.
+- **Boolean predicates:** name functions that return yes/no so the call reads as a question (`canResolveSlug`, `hasRunnerUp`, `checkIsExactMatch`). Prefer `can` / `has` / `check` / `should` over `getIs…` / `getShould…`—that pattern reads like a property accessor for a stored flag. Reserve **`is` / `has` / …** on functions for type guards only.
+- **`compute` / `calc`** for calculated non-boolean results (`computeFuzzyScore`).
+- **Locals:** context-readable names (`projectList`, `runnerUp`, `normalizedSlug`)—not `e`, `res`, `n`, `c`, `x` unless scope is tiny.
 - **Parameters:** stable context first (catalog, `projects`), per-request values after (`pathname`, `query`, `slug`) when both are passed.
+- **Name for what a thing is, not where it lives.** When a folder or module already conveys context, do not restate it as an identifier prefix.
 
 ## Fail fast
 
