@@ -2,7 +2,12 @@ name: Continuous Integration
 
 on:
   push:
+    branches: [main]
   pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   fmt:
@@ -40,6 +45,15 @@ jobs:
       - uses: ./.github/actions/install-bun-and-dependencies
       - name: Test
         run: bun run test
+
+  comment-fmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/install-bun-and-dependencies
+      - name: Comment format
+        run: bun run comment-fmt:check
 
   fallow:
     runs-on: ubuntu-latest
