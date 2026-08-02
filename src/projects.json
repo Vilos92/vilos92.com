@@ -54,6 +54,12 @@
     "slug": "ck22"
   },
   {
+    "githubUrl": "https://github.com/Vilos92/comment-fmt",
+    "name": "comment-fmt",
+    "private": false,
+    "slug": "comment-fmt"
+  },
+  {
     "githubUrl": "https://github.com/Vilos92/copyparty-tunnel",
     "name": "copyparty-tunnel",
     "private": false,
