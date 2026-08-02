@@ -9,7 +9,9 @@ import type {Project} from '@/lib/projects';
 /** Minimum `fuzzysort` score (0–1) for a match; see `FUZZY_MIN_SCORE`. */
 export const FUZZY_MIN_SCORE = 0.5;
 
-/** Top-two slug matches must differ by at least `FUZZY_SCORE_GAP` or `routing` treats the match as ambiguous. */
+/**
+ * Top-two slug matches must differ by at least `FUZZY_SCORE_GAP` or `routing` treats the match as ambiguous.
+ */
 export const FUZZY_SCORE_GAP = 0.15;
 
 const HUB_PREVIEW_LIMIT = 8;

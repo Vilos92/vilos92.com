@@ -17,7 +17,8 @@ function fuzzyFindProjectFromScored(results: ReturnType<typeof searchProjectsSco
   }
 
   const runnerUp = results[1];
-  // A close second plausible match (e.g. `ck` → `ck22` vs another repo) — return `undefined` so routing falls back to hub search instead of a wrong 302.
+  // A close second plausible match (e.g. `ck` → `ck22` vs another repo) — return `undefined` so routing
+  // falls back to hub search instead of a wrong 302.
   if (runnerUp && runnerUp.score >= FUZZY_MIN_SCORE && best.score - runnerUp.score < FUZZY_SCORE_GAP) {
     return undefined;
   }
