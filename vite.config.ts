@@ -43,7 +43,10 @@ export default defineConfig({
         })
       ],
   staged: {
-    '*': 'vp check --fix'
+    // `comment-fmt` runs last, after `vp check --fix`: oxfmt re-indents comments as part of
+    // formatting the code around them, and comment-fmt's width math depends on a comment's final
+    // indentation, so it has to see the post-format result.
+    '*': ['vp check --fix', 'comment-fmt --write']
   },
   fmt: REPO_TS_FMT_OPTIONS,
   lint: {
