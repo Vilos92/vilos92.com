@@ -17,6 +17,7 @@
         "@preact/preset-vite": "^2.10.5",
         "@vanilla-extract/css": "^1.20.1",
         "@vanilla-extract/vite-plugin": "^5.2.2",
+        "comment-fmt": "0.1.4",
         "fallow": "^2.66.1",
         "typescript": "~7.0.2",
         "vite": "npm:@voidzero-dev/vite-plus-core@latest",
@@ -450,6 +451,8 @@
     "cac": ["cac@7.0.0", "", {}, "sha512-tixWYgm5ZoOD+3g6UTea91eow5z6AAHaho3g0V9CNSNb45gM8SmflpAc+GRd1InC4AqN/07Unrgp56Y94N9hJQ=="],
 
     "caniuse-lite": ["caniuse-lite@1.0.30001793", "", {}, "sha512-iwSsYWaCOoh26cV8NwNRViHlrfUvYsHDfRVcbtmw0Kg6PJIZZXwMkj1442FYLBGkeUf1juAsU3DTfxW579mrPA=="],
+
+    "comment-fmt": ["comment-fmt@0.1.4", "", { "bin": { "comment-fmt": "dist/cli/index.mjs" } }, "sha512-koowyRo1MIROWlqfZPLXLu9oNLXPpjDL+T4yW6eITkN8DuAiF0uq/U9FM4eXXwAfIYDYQHT6SUAJVc37sSPW1Q=="],
 
     "confbox": ["confbox@0.1.8", "", {}, "sha512-RMtmw0iFkeR4YV+fUOSucriAQNb9g8zFR52MWCtl+cCZOFRNL6zeB395vPzFhEjjn4fMxXudmELnl/KF/WrK6w=="],
 
