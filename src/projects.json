@@ -144,6 +144,12 @@
     "slug": "gdex"
   },
   {
+    "githubUrl": "https://github.com/Vilos92/gmux",
+    "name": "gmux",
+    "private": false,
+    "slug": "gmux"
+  },
+  {
     "githubUrl": "https://github.com/Vilos92/greg-zone",
     "name": "greg-zone",
     "private": false,
