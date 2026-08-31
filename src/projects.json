@@ -288,6 +288,12 @@
     "slug": "rusty-web-terminal"
   },
   {
+    "githubUrl": "https://github.com/Vilos92/s3-amoled",
+    "name": "s3-amoled",
+    "private": true,
+    "slug": "s3-amoled"
+  },
+  {
     "githubUrl": "https://github.com/Vilos92/scriptlancer",
     "name": "scriptlancer",
     "private": true,
