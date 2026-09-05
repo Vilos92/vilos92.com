@@ -212,7 +212,7 @@
   {
     "githubUrl": "https://github.com/Vilos92/MilkTea",
     "name": "MilkTea",
-    "private": true,
+    "private": false,
     "slug": "milktea"
   },
   {
