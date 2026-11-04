@@ -20,7 +20,7 @@ type IconProps = {
  * Constants.
  */
 
-/** Nucleo Micro draws on a 20px grid, so the viewBox matches it one to one. */
+/** Path modules draw on a 20px grid, so the viewBox matches it one to one. */
 const GRID_PX = 20;
 
 const SIZE_PX_MAP: Record<IconSize, number> = {
@@ -33,9 +33,8 @@ const SIZE_PX_MAP: Record<IconSize, number> = {
  */
 
 /**
- * Renders a licensed Nucleo icon by its hub role. Each path module is named after its Nucleo label so a
- * swap maps straight back to the library. Decorative by contract: the surrounding control carries the
- * accessible name.
+ * Renders an icon by its hub role. Decorative by contract:
+ * the surrounding control carries the accessible name.
  */
 export function Icon({type, size, className}: IconProps) {
   const sizePx = SIZE_PX_MAP[size];
