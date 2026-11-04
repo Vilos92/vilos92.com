@@ -1,3 +1,4 @@
+import {Icon} from '@/hub/icon/Icon';
 import type {HubSearchViewModel} from '@/hub/use-hub-search';
 import {deriveHubGoButtonProps} from '@/lib/hub-go-button';
 
@@ -17,6 +18,7 @@ export function HubSearchGoButton({search}: HubSearchGoButtonProps) {
   return (
     <button {...buttonProps} className={styles.submitButton} type="submit">
       Go
+      <Icon size="sm" type="go" />
     </button>
   );
 }

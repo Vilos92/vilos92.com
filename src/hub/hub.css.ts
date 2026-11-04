@@ -55,6 +55,9 @@ export const title = style({
 });
 
 export const siteTitle = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.5rem',
   color: 'inherit',
   textDecoration: 'none',
   borderRadius: '0.25rem',
@@ -173,6 +176,10 @@ export const input = style({
 });
 
 export const submitButton = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '0.375rem',
   flexShrink: 0,
   minWidth: '3.25rem',
   padding: '0.625rem 1.125rem',
@@ -255,7 +262,10 @@ export const results = style({
 });
 
 export const resultOption = style({
-  display: 'block',
+  display: 'grid',
+  gridTemplateColumns: '1fr auto',
+  alignItems: 'center',
+  columnGap: '0.75rem',
   width: '100%',
   padding: '0.5rem 0.75rem',
   border: 0,
@@ -294,13 +304,26 @@ export const resultOptionActive = style({
 
 export const resultName = style({
   display: 'block',
+  gridColumn: 1,
   fontWeight: 500
 });
 
 export const resultSlug = style({
   display: 'block',
+  gridColumn: 1,
   fontSize: '0.8125rem',
   color: palette.textMuted
+});
+
+export const resultIcon = style({
+  gridColumn: 2,
+  gridRow: '1 / span 2',
+  color: palette.textSubtle,
+  selectors: {
+    [`${resultOption}[aria-selected="true"] &`]: {
+      color: palette.accent
+    }
+  }
 });
 
 const panelMessage = {

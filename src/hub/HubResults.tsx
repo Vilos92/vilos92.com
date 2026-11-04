@@ -1,5 +1,6 @@
 import type {JSX} from 'preact';
 
+import {Icon} from '@/hub/icon/Icon';
 import {hubProjectOptionId} from '@/lib/hub-search-list';
 import type {Project} from '@/lib/projects';
 
@@ -60,6 +61,7 @@ export function HubResults({
             >
               <span className={styles.resultName}>{project.name}</span>
               <span className={styles.resultSlug}>/{project.slug}</span>
+              <Icon className={styles.resultIcon} size="sm" type="external-link" />
               <span className={styles.visuallyHidden}> (opens in new tab)</span>
             </button>
           </li>

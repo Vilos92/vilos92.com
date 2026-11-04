@@ -46,6 +46,13 @@ Living conventions for this repo. Order and wording can evolve—ask whether new
 - **Runtime-varying values via `createVar` + `setElementVar`.** CSS variables that change at runtime flow through a `createVar()` in `.css.ts` and are updated by `setElementVar` from `@vanilla-extract/dynamic`. The static rule stays in `.css.ts`; only the value moves at runtime.
 - **Imperative `element.style` is the last resort.** Reach for it only when neither pattern above fits.
 
+## Icons
+
+- **Nucleo Micro** (20px glyph grid) for every icon, matching MilkTea. Do not mix in other Nucleo families or hand-drawn SVGs. The one exception is a brand mark Micro lacks, which comes from Nucleo **Social Media** (for example `github`).
+- **Render through `src/hub/icon/Icon.tsx`** (`<Icon type="go" size="sm" />`). `IconType` names the role in the hub. Each module in `icon/paths/` holds one Nucleo icon's inner markup and is named after its Nucleo label (`arrow-up-right.tsx` exports `ArrowUpRight`).
+- **Add an icon** by copying the inner markup of its Nucleo React component into a new `paths/` module, then mapping a new `IconType` to it. Import nothing from the local Nucleo install.
+- **CSS-only slots** (for example the native search cancel button in `hub.css.ts`) inline the same Nucleo markup as a data URI, since they cannot render a component.
+
 ## File layout (section comments)
 
 Use `/* Section name. */` blocks. Read top-down: main entry first, **Helpers.** last.
