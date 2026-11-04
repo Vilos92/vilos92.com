@@ -7,8 +7,11 @@ import {palette} from '@/hub/tokens';
  * Styles.
  */
 
+/**
+ * Nucleo Micro `xmark` (20px grid), inlined because the native cancel button only takes a background image.
+ */
 const searchClearIcon = encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#9490a8"><path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L8.94 10l-4.72 4.72a.75.75 0 1 0 1.06 1.06L10 11.06l4.72 4.72a.75.75 0 1 0 1.06-1.06L11.06 10l4.72-4.72a.75.75 0 0 0-1.06-1.06L10 8.94 5.28 4.22Z"/></svg>'
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="${palette.textSubtle}" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><line x1="5" y1="5" x2="15" y2="15"/><line x1="5" y1="15" x2="15" y2="5"/></svg>`
 );
 
 export const main = style({
