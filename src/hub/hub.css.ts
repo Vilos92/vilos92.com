@@ -257,7 +257,7 @@ export const searchPanel = style({
 
 export const results = style({
   margin: 0,
-  padding: 0,
+  padding: '0.25rem',
   listStyle: 'none'
 });
 
@@ -282,7 +282,7 @@ export const resultOption = style({
       background: palette.surfaceHover
     },
     '&:focus-visible': {
-      outlineOffset: '-1px'
+      outlineOffset: '-2px'
     }
   },
   '@media': {
